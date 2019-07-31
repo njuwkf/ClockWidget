@@ -23,8 +23,8 @@ tools:ignore="RtlSymmetry">
     android:layout_height="50dp"
     android:background="@color/current_time_bg"
     android:gravity="center_vertical"
-    android:orientation="horizontal">
-
+    android:orientation="horizontal"
+    android:clickable="true">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -71,7 +71,8 @@ tools:ignore="RtlSymmetry">
     android:layout_height="50dp"
     android:background="@color/current_time_bg"
     android:gravity="center_vertical"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:clickable="true">
 
     <TextView
         android:layout_width="wrap_content"
