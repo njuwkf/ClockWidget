@@ -1,9 +1,14 @@
-package com.example.clockwidget;
+package com.example.clockwidget.ClockWidget;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.RemoteViews;
+
+import com.example.clockwidget.DateSettingsActivity;
+import com.example.clockwidget.R;
 
 public class ClockProvider extends AppWidgetProvider {
 
@@ -12,6 +17,14 @@ public class ClockProvider extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
                          int[] appWidgetIds) {
         // TODO Auto-generated method stub
+        for(int i=0;i<appWidgetIds.length;i++){
+            System.out.println(appWidgetIds[i]);
+            Intent intent = new Intent(context, DateSettingsActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+            RemoteViews remoteViews =new RemoteViews(context.getPackageName(), R.layout.clockwidge_activity);
+            remoteViews.setOnClickPendingIntent(R.id.ll_clockwidge,pendingIntent);
+            appWidgetManager.updateAppWidget(appWidgetIds[i], remoteViews);
+        }
         super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
 

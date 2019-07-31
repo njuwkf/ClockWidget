@@ -16,5 +16,11 @@
     <string name="current_date">当前日期</string>
     <string name="select_time">选择时间</string>
     <string name="current_time">当前时间</string>
-
+    <string name="select_timeformat">选择时间格式</string>
+    <string name="current_timeformat">当前时间格式</string>
+    <string name="select_fontcolor">选择字体颜色</string>
+    <string name="current_fontcolor">当前字体颜色</string>
+    <string name="fontcolor">黑</string>
+    <string name="select_fontsize">选择字体大小</string>
+    <string name="current_fontsize">当前字体大小</string>
 </resources>

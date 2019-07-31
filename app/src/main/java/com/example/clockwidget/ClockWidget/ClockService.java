@@ -1,12 +1,17 @@
-package com.example.clockwidget;
+package com.example.clockwidget.ClockWidget;
 
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.RemoteViews;
+
+import com.example.clockwidget.ClockWidget.ClockProvider;
+import com.example.clockwidget.MyApp;
+import com.example.clockwidget.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -39,15 +44,24 @@ public class ClockService extends Service {
         //时间
         String str_time = simpleDateFormat.format(new Date());
         String str_date=getDateString()+"  "+getDateInWeek();
-        RemoteViews rViews = new RemoteViews(getPackageName(),R.layout.clockwidge_activity);
+        RemoteViews rViews = new RemoteViews(getPackageName(), R.layout.clockwidge_activity);
         //显示当前时间
         Log.e("time",str_time);
         Log.e("date",str_date);
         rViews.setTextViewText(R.id.clock_time,str_time);
         rViews.setTextViewText(R.id.date_time,str_date);
+        switch (MyApp.getfontcolor()) {
+            case "黑":rViews.setTextColor(R.id.clock_time, Color.BLACK);break;
+            case "白":rViews.setTextColor(R.id.clock_time, Color.WHITE);break;
+            case "红":rViews.setTextColor(R.id.clock_time, Color.RED);break;
+            case "黄":rViews.setTextColor(R.id.clock_time, Color.YELLOW);break;
+            case "绿":rViews.setTextColor(R.id.clock_time, Color.GREEN);break;
+            case "蓝":rViews.setTextColor(R.id.clock_time, Color.BLUE);break;
+            default:break;
+        }
         //刷新
         AppWidgetManager manager = AppWidgetManager.getInstance(getApplicationContext());
-        ComponentName cName = new ComponentName(getApplicationContext(),ClockProvider.class);
+        ComponentName cName = new ComponentName(getApplicationContext(), ClockProvider.class);
         manager.updateAppWidget(cName,rViews);
     }
 

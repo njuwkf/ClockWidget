@@ -7,7 +7,7 @@ android:background="@color/main_bg"
 android:orientation="vertical"
 tools:ignore="RtlSymmetry">
 
-<TextView
+    <TextView
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:gravity="center_vertical"
@@ -17,7 +17,7 @@ tools:ignore="RtlSymmetry">
     android:textColor="@color/select_title_text"
     android:textSize="15sp" />
 
-<LinearLayout
+    <LinearLayout
     android:id="@+id/ll_date"
     android:layout_width="match_parent"
     android:layout_height="50dp"
@@ -26,35 +26,35 @@ tools:ignore="RtlSymmetry">
     android:orientation="horizontal"
     android:clickable="true">
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginStart="15dp"
-        android:layout_marginLeft="0dp"
-        android:background="@null"
-        android:gravity="center_vertical"
-        android:text="@string/current_date"
-        android:textColor="@color/current_time_text"
-        android:textSize="15sp" />
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_marginStart="15dp"
+    android:layout_marginLeft="0dp"
+    android:background="@null"
+    android:gravity="center_vertical"
+    android:text="@string/current_date"
+    android:textColor="@color/current_time_text"
+    android:textSize="15sp" />
 
     <Space
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1" />
+    android:layout_width="0dp"
+    android:layout_height="match_parent"
+    android:layout_weight="1" />
 
     <TextView
-        android:id="@+id/tv_selected_date"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginEnd="15dp"
-        android:layout_marginRight="0dp"
-        android:background="@null"
-        android:gravity="center_vertical"
-        android:textColor="@color/selected_time_text"
-        android:textSize="15sp" />
+    android:id="@+id/tv_selected_date"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_marginEnd="15dp"
+    android:layout_marginRight="0dp"
+    android:background="@null"
+    android:gravity="center_vertical"
+    android:textColor="@color/selected_time_text"
+    android:textSize="15sp" />
 
-</LinearLayout>
+    </LinearLayout>
 
-<TextView
+    <TextView
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:background="@null"
@@ -65,7 +65,7 @@ tools:ignore="RtlSymmetry">
     android:textColor="@color/select_title_text"
     android:textSize="15sp" />
 
-<LinearLayout
+    <LinearLayout
     android:id="@+id/ll_time"
     android:layout_width="match_parent"
     android:layout_height="50dp"
@@ -75,32 +75,179 @@ tools:ignore="RtlSymmetry">
     android:clickable="true">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginStart="15dp"
-        android:layout_marginLeft="0dp"
-        android:background="@null"
-        android:gravity="center_vertical"
-        android:text="@string/current_time"
-        android:textColor="@color/current_time_text"
-        android:textSize="15sp" />
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_marginStart="15dp"
+    android:layout_marginLeft="0dp"
+    android:background="@null"
+    android:gravity="center_vertical"
+    android:text="@string/current_time"
+    android:textColor="@color/current_time_text"
+    android:textSize="15sp" />
 
     <Space
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1" />
+    android:layout_width="0dp"
+    android:layout_height="match_parent"
+    android:layout_weight="1" />
 
     <TextView
-        android:id="@+id/tv_selected_time"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginEnd="15dp"
-        android:layout_marginRight="0dp"
+    android:id="@+id/tv_selected_time"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_marginEnd="15dp"
+    android:layout_marginRight="0dp"
+    android:background="@null"
+    android:gravity="center_vertical"
+    android:textColor="@color/selected_time_text"
+    android:textSize="15sp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:background="@null"
         android:gravity="center_vertical"
-        android:textColor="@color/selected_time_text"
+        android:paddingStart="15dp"
+        android:paddingLeft="0dp"
+        android:text="@string/select_timeformat"
+        android:textColor="@color/select_title_text"
         android:textSize="15sp" />
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_timeformat"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/current_time_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:clickable="true">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="0dp"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:text="@string/current_timeformat"
+            android:textColor="@color/current_time_text"
+            android:textSize="15sp" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/tv_selected_timeformat"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="15dp"
+            android:layout_marginRight="0dp"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:textColor="@color/selected_time_text"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@null"
+        android:gravity="center_vertical"
+        android:paddingStart="15dp"
+        android:paddingLeft="0dp"
+        android:text="@string/select_fontcolor"
+        android:textColor="@color/select_title_text"
+        android:textSize="15sp" />
+
+    <LinearLayout
+        android:id="@+id/ll_fontcolor"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/current_time_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:clickable="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="0dp"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:text="@string/current_fontcolor"
+            android:textColor="@color/current_time_text"
+            android:textSize="15sp" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/tv_selected_color"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="15dp"
+            android:layout_marginRight="0dp"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:textColor="@color/selected_time_text"
+            android:text="@string/fontcolor"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@null"
+        android:gravity="center_vertical"
+        android:paddingStart="15dp"
+        android:paddingLeft="0dp"
+        android:text="@string/select_fontsize"
+        android:textColor="@color/select_title_text"
+        android:textSize="15sp" />
+
+    <LinearLayout
+        android:id="@+id/ll_fontsize"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/current_time_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:clickable="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="0dp"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:text="@string/current_fontsize"
+            android:textColor="@color/current_time_text"
+            android:textSize="15sp" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/tv_selected_size"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="15dp"
+            android:layout_marginRight="0dp"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:textColor="@color/selected_time_text"
+            android:textSize="15sp" />
+
+    </LinearLayout>
 </LinearLayout>
