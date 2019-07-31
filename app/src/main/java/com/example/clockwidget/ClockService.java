@@ -8,8 +8,6 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -43,8 +41,8 @@ public class ClockService extends Service {
         String str_date=getDateString()+"  "+getDateInWeek();
         RemoteViews rViews = new RemoteViews(getPackageName(),R.layout.clockwidge_activity);
         //显示当前时间
-        // Log.e("time",str_time);
-      //  Log.e("date",str_date);
+        Log.e("time",str_time);
+        Log.e("date",str_date);
         rViews.setTextViewText(R.id.clock_time,str_time);
         rViews.setTextViewText(R.id.date_time,str_date);
         //刷新
