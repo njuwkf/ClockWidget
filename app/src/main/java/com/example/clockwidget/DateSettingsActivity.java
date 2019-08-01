@@ -14,6 +14,11 @@ import com.example.clockwidget.Utils.SaveUtils;
 
 import java.util.ArrayList;
 
+/**
+ * @auther 吴科烽
+ * @date 2019-07-31
+ * @describle TODO
+ **/
 
 public class DateSettingsActivity extends Activity implements View.OnClickListener {
     private LinearLayout mdate_linearLayout;
@@ -21,11 +26,15 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
     private LinearLayout mtimeformat_linearLayout;
     private LinearLayout mfontcolor_linearLayout;
     private LinearLayout mfontsize_linearLayout;
+    private LinearLayout mclockstyle_linearLayout;
+
     private TextView mdate_text;
     private TextView mtime_text;
     private TextView mtimeformat_text;
     private TextView mfontcolor_text;
     private TextView mfontsize_text;
+    private TextView mclockstyle_text;
+
 
     private String selectText = "";
     private ArrayList<String> mfontcolorList = new ArrayList<>();
@@ -47,12 +56,14 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
         mtimeformat_linearLayout = findViewById(R.id.ll_timeformat);
         mfontcolor_linearLayout = findViewById(R.id.ll_fontcolor);
         mfontsize_linearLayout = findViewById(R.id.ll_fontsize);
+        mclockstyle_linearLayout = findViewById(R.id.ll_clockstyle);
 
         mdate_text = findViewById(R.id.tv_selected_date);
         mtime_text = findViewById(R.id.tv_selected_time);
         mtimeformat_text = findViewById(R.id.tv_selected_timeformat);
         mfontcolor_text = findViewById(R.id.tv_selected_color);
         mfontsize_text = findViewById(R.id.tv_selected_size);
+        mclockstyle_text = findViewById(R.id.tv_selected_clockstyle);
 
         if("".equals(SaveUtils.getFontColor(DateSettingsActivity.this))){
             mfontcolor_text.setText("黑");
@@ -70,6 +81,12 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
             mtimeformat_text.setText("24小时制");
         }else{
             mtimeformat_text.setText(SaveUtils.getTimeFormat(DateSettingsActivity.this));
+        }
+
+        if("".equals(SaveUtils.getClockStyle(DateSettingsActivity.this))){
+            mclockstyle_text.setText("数字时钟");
+        }else{
+            mclockstyle_text.setText(SaveUtils.getClockStyle(DateSettingsActivity.this));
         }
     }
 
@@ -97,6 +114,7 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
         mtimeformat_linearLayout.setOnClickListener(this);
         mfontcolor_linearLayout.setOnClickListener(this);
         mfontsize_linearLayout.setOnClickListener(this);
+        mclockstyle_linearLayout.setOnClickListener(this);
     }
 
     @Override
@@ -108,13 +126,16 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
             case R.id.ll_time:
                 DateUtils.showTimePickerDialog(DateSettingsActivity.this,2, mtime_text);
             case R.id.ll_timeformat:
-                timeformatChoice();
+                timeFormatChoice();
                 break;
             case R.id.ll_fontcolor:
                 showDialog(mfontcolor_text,mfontcolorList,6);
                 break;
             case R.id.ll_fontsize:
                 showDialog(mfontsize_text,mfontsizeList,21);
+                break;
+            case R.id.ll_clockstyle:
+                clockStyleChoice();
                 break;
             default:
                 break;
@@ -173,7 +194,7 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
 
 
     //日期格式改变
-    private void timeformatChoice() {
+    private void timeFormatChoice() {
         final String items[] = {"24小时制", "12小时制"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this,0);
         builder.setTitle("时间格式选择");
@@ -189,5 +210,21 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
         builder.show();
     }
 
-
+    //闹钟格式改变
+    private void clockStyleChoice() {
+        final String items[] = {"数字时钟", "图形时钟"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this,0);
+        builder.setTitle("时钟样式选择");
+        builder.setSingleChoiceItems(items, 0,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //todo:change clock style
+                        SaveUtils.saveClockStyle(DateSettingsActivity.this,items[which]);
+                        mclockstyle_text.setText(items[which]);
+                        dialog.dismiss();
+                    }
+                });
+        builder.show();
+    }
 }

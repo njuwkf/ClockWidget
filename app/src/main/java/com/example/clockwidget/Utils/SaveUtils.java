@@ -3,6 +3,12 @@ package com.example.clockwidget.Utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+/**
+ * @auther 吴科烽
+ * @date 2019-07-31
+ * @describle TODO
+ **/
+
 public class SaveUtils {
     //保存字体颜色
     public static boolean saveFontColor(Context context, String fontcolor) {
@@ -50,6 +56,22 @@ public class SaveUtils {
         SharedPreferences mSharedPreferences=context.getSharedPreferences("data",Context.MODE_MULTI_PROCESS);
         String timeformat=mSharedPreferences.getString("timeformat",null);
         return timeformat;
+    }
+
+    //保存日期格式
+    public static boolean saveClockStyle(Context context, String clockstyle) {
+        SharedPreferences mSharedPreferences = context.getSharedPreferences("data", Context.MODE_MULTI_PROCESS);
+        SharedPreferences.Editor edit = mSharedPreferences.edit();
+        edit.putString("clockstyle", clockstyle);
+        edit.commit();
+        return true;
+    }
+
+    //提取日期格式
+    public static String getClockStyle(Context context){
+        SharedPreferences mSharedPreferences=context.getSharedPreferences("data",Context.MODE_MULTI_PROCESS);
+        String clockstyle=mSharedPreferences.getString("clockstyle",null);
+        return clockstyle;
     }
 
 }

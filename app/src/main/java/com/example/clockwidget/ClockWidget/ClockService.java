@@ -21,11 +21,25 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+
+/**
+ * @auther 吴科烽
+ * @date 2019-07-30
+ * @describle TODO
+ **/
+
 public class ClockService extends Service {
     private Timer timer;
-    private String str_twelvehour = "12小时制";
+    private static final String str_twelvehour = "12小时制";
     private static final String TAG = "ColockService";
-
+    private static final String str_am="上午";
+    private static final String str_pm="下午";
+    private static final String str_color_black="黑";
+    private static final String str_color_white="白";
+    private static final String str_color_red="红";
+    private static final String str_color_yellow="黄";
+    private static final String str_color_green="绿";
+    private static final String str_color_blue="蓝";
     @Override
     public IBinder onBind(Intent intent){
         return null;
@@ -46,7 +60,6 @@ public class ClockService extends Service {
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void updateView(){
-        //时间格式
         String str_time;
         String str_date = getDateString() + "  " + getDateInWeek();
         long currentTime = System.currentTimeMillis();
@@ -57,10 +70,10 @@ public class ClockService extends Service {
             Calendar mCalendar = Calendar.getInstance();
             if(mCalendar.get(Calendar.AM_PM) == 0){
                 //上午
-                str_date = str_date + " 上午";
+                str_date = str_date + " "+str_am;
             }else {
                 //下午
-                str_date = str_date + " 下午";
+                str_date = str_date + " "+str_pm;
             }
         }else{
             SimpleDateFormat twentyfour_formatter = new SimpleDateFormat("HH:mm:ss");
@@ -73,36 +86,36 @@ public class ClockService extends Service {
         Log.d(TAG,"ClockService_date:"+str_date);
         rViews.setTextViewText(R.id.clock_time,str_time);
         rViews.setTextViewText(R.id.date_time,str_date);
-        //时钟颜色变化（从sharepreferences中读取数据）
+        //时钟字体颜色变化（从sharepreferences中读取数据）
         if("".equals(SaveUtils.getFontColor(this))){
             Log.d(TAG,"ClockService_fontcolor:"+SaveUtils.getFontColor(this));
             rViews.setTextColor(R.id.clock_time,Color.BLACK);
         }else {
             Log.d(TAG,"ClockService_fontcolor"+SaveUtils.getFontColor(this));
             switch (SaveUtils.getFontColor(this)) {
-                case "黑":
+                case str_color_black:
                     rViews.setTextColor(R.id.clock_time, Color.BLACK);
                     break;
-                case "白":
+                case str_color_white:
                     rViews.setTextColor(R.id.clock_time, Color.WHITE);
                     break;
-                case "红":
+                case str_color_red:
                     rViews.setTextColor(R.id.clock_time, Color.RED);
                     break;
-                case "黄":
+                case str_color_yellow:
                     rViews.setTextColor(R.id.clock_time, Color.YELLOW);
                     break;
-                case "绿":
+                case str_color_green:
                     rViews.setTextColor(R.id.clock_time, Color.GREEN);
                     break;
-                case "蓝":
+                case str_color_blue:
                     rViews.setTextColor(R.id.clock_time, Color.BLUE);
                     break;
                 default:
                     break;
             }
         }
-        //时钟大小变化（从sharepreferences中读取数据）
+        //时钟字体大小变化（从sharepreferences中读取数据）
         if("".equals(SaveUtils.getFontSize(this))){
             Log.d(TAG,"ClockService_fontsize"+SaveUtils.getFontSize(this));
             rViews.setTextViewTextSize(R.id.clock_time, TypedValue.COMPLEX_UNIT_SP, 40);

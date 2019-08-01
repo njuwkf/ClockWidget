@@ -23,4 +23,6 @@
     <string name="fontcolor">黑</string>
     <string name="select_fontsize">选择字体大小</string>
     <string name="current_fontsize">当前字体大小</string>
+    <string name="select_clockstyle">选择时钟样式</string>
+    <string name="current_clockstyle">当前时钟样式</string>
 </resources>
