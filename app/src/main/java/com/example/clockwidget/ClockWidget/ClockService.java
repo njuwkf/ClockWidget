@@ -5,13 +5,15 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
+import android.util.TypedValue;
 import android.widget.RemoteViews;
 
-import com.example.clockwidget.ClockWidget.ClockProvider;
-import com.example.clockwidget.MyApp;
+import androidx.annotation.RequiresApi;
 import com.example.clockwidget.R;
+import com.example.clockwidget.Utils.SaveUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -21,8 +23,9 @@ import java.util.TimerTask;
 
 public class ClockService extends Service {
     private Timer timer;
-    private SimpleDateFormat simpleDateFormat=new SimpleDateFormat("HH:mm:ss");
-    private String[] week={"周一","周二","周三","周四","周五","周六","周日"};
+    private SimpleDateFormat mtwelve_simpleDateFormat = new SimpleDateFormat("hh:mm:ss");
+    private SimpleDateFormat mtwentyfour_simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+    private String str_twelvehour = "12小时制";
     @Override
     public IBinder onBind(Intent intent){
         return null;
@@ -33,6 +36,7 @@ public class ClockService extends Service {
         super.onCreate();
         timer = new Timer();
         timer.schedule(new TimerTask() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void run() {
                 updateView();
@@ -40,24 +44,68 @@ public class ClockService extends Service {
         },0,1000);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void updateView(){
-        //时间
-        String str_time = simpleDateFormat.format(new Date());
-        String str_date=getDateString()+"  "+getDateInWeek();
+        //时间格式
+        String str_time;
+        String str_date = getDateString() + "  " + getDateInWeek();
+        if(str_twelvehour.equals(SaveUtils.getTimeFormat(this))){
+            str_time = mtwelve_simpleDateFormat.format(new Date());
+            Calendar mCalendar = Calendar.getInstance();
+            if(mCalendar.get(Calendar.AM_PM) == 0){
+                //上午
+                str_date = str_date + "上午";
+            }else {
+                //下午
+                str_date = str_date + "下午";
+            }
+        }else{
+             str_time = mtwentyfour_simpleDateFormat.format(new Date());
+        }
         RemoteViews rViews = new RemoteViews(getPackageName(), R.layout.clockwidge_activity);
         //显示当前时间
-        Log.e("time",str_time);
-        Log.e("date",str_date);
+        Log.e("ClockService_time",str_time);
+        Log.e("ClockService_date",str_date);
         rViews.setTextViewText(R.id.clock_time,str_time);
         rViews.setTextViewText(R.id.date_time,str_date);
-        switch (MyApp.getfontcolor()) {
-            case "黑":rViews.setTextColor(R.id.clock_time, Color.BLACK);break;
-            case "白":rViews.setTextColor(R.id.clock_time, Color.WHITE);break;
-            case "红":rViews.setTextColor(R.id.clock_time, Color.RED);break;
-            case "黄":rViews.setTextColor(R.id.clock_time, Color.YELLOW);break;
-            case "绿":rViews.setTextColor(R.id.clock_time, Color.GREEN);break;
-            case "蓝":rViews.setTextColor(R.id.clock_time, Color.BLUE);break;
-            default:break;
+        //时钟颜色变化（从sharepreferences中读取数据）
+        if("".equals(SaveUtils.getFontColor(this))){
+            Log.e("ClockService_fontcolor",SaveUtils.getFontColor(this));
+            rViews.setTextColor(R.id.clock_time,Color.BLACK);
+        }else {
+            Log.e("ClockService_fontcolor",SaveUtils.getFontColor(this));
+            switch (SaveUtils.getFontColor(this)) {
+                case "黑":
+                    rViews.setTextColor(R.id.clock_time, Color.BLACK);
+                    break;
+                case "白":
+                    rViews.setTextColor(R.id.clock_time, Color.WHITE);
+                    break;
+                case "红":
+                    rViews.setTextColor(R.id.clock_time, Color.RED);
+                    break;
+                case "黄":
+                    rViews.setTextColor(R.id.clock_time, Color.YELLOW);
+                    break;
+                case "绿":
+                    rViews.setTextColor(R.id.clock_time, Color.GREEN);
+                    break;
+                case "蓝":
+                    rViews.setTextColor(R.id.clock_time, Color.BLUE);
+                    break;
+                default:
+                    break;
+            }
+        }
+        //时钟大小变化（从sharepreferences中读取数据）
+        if("".equals(SaveUtils.getFontSize(this))){
+            Log.e("ClockService_fontsize",SaveUtils.getFontSize(this));
+            rViews.setTextViewTextSize(R.id.clock_time, TypedValue.COMPLEX_UNIT_SP, 40);
+        }else {
+            Log.e("ClockService_fontsize",SaveUtils.getFontSize(this));
+            String str_fontsize = SaveUtils.getFontSize(this).substring(0, 2);
+            int font_size = Integer.parseInt(str_fontsize);
+            rViews.setTextViewTextSize(R.id.clock_time, TypedValue.COMPLEX_UNIT_SP, font_size);
         }
         //刷新
         AppWidgetManager manager = AppWidgetManager.getInstance(getApplicationContext());

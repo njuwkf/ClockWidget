@@ -1,4 +1,4 @@
-package com.example.clockwidget;
+package com.example.clockwidget.Utils;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -10,7 +10,7 @@ import android.widget.TimePicker;
 
 import java.util.Calendar;
 
-public class DateUtil {
+public class DateUtils {
     /**
      * 日期选择
      *

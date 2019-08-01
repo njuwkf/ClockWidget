@@ -244,6 +244,7 @@ tools:ignore="RtlSymmetry">
             android:layout_height="match_parent"
             android:layout_marginEnd="15dp"
             android:layout_marginRight="0dp"
+            android:text="40dp"
             android:background="@null"
             android:gravity="center_vertical"
             android:textColor="@color/selected_time_text"
