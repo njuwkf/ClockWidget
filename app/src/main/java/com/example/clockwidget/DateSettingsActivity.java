@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -43,8 +44,8 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.datesettings_activity);
-        initView();
         initData();
+        initView();
         initListeners();
     }
 
@@ -64,30 +65,12 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
         mfontcolor_text = findViewById(R.id.tv_selected_color);
         mfontsize_text = findViewById(R.id.tv_selected_size);
         mclockstyle_text = findViewById(R.id.tv_selected_clockstyle);
+        Log.d("DateSettingsActivity",SaveUtils.getFontColor(DateSettingsActivity.this));
 
-        if("".equals(SaveUtils.getFontColor(DateSettingsActivity.this))){
-            mfontcolor_text.setText("黑");
-        }else{
-            mfontcolor_text.setText(SaveUtils.getFontColor(DateSettingsActivity.this));
-        }
-
-        if("".equals(SaveUtils.getFontSize(DateSettingsActivity.this))){
-            mfontsize_text.setText("40sp");
-        }else{
-            mfontsize_text.setText(SaveUtils.getFontSize(DateSettingsActivity.this));
-        }
-
-        if("".equals(SaveUtils.getTimeFormat(DateSettingsActivity.this))){
-            mtimeformat_text.setText("24小时制");
-        }else{
-            mtimeformat_text.setText(SaveUtils.getTimeFormat(DateSettingsActivity.this));
-        }
-
-        if("".equals(SaveUtils.getClockStyle(DateSettingsActivity.this))){
-            mclockstyle_text.setText("数字时钟");
-        }else{
-            mclockstyle_text.setText(SaveUtils.getClockStyle(DateSettingsActivity.this));
-        }
+        mfontcolor_text.setText(SaveUtils.getFontColor(DateSettingsActivity.this));
+        mfontsize_text.setText(SaveUtils.getFontSize(DateSettingsActivity.this));
+        mtimeformat_text.setText(SaveUtils.getTimeFormat(DateSettingsActivity.this));
+        mclockstyle_text.setText(SaveUtils.getClockStyle(DateSettingsActivity.this));
     }
 
 
@@ -103,7 +86,7 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
         mfontcolorList.add("蓝");
         mfontsizeList.clear();
         for(int i=25;i<=45;i++) {
-            mfontsizeList.add(i + "dp");
+            mfontsizeList.add(i + "sp");
         }
     }
 
@@ -226,5 +209,16 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
                     }
                 });
         builder.show();
+    }
+
+
+    //判断Sharedpreferences中数据是否存在
+    private boolean isExistDataInSp(ArrayList<String> mdataList,String dataInSp){
+        for(String strdata:mdataList){
+            if(strdata.equals(dataInSp)){
+                return true;
+            }
+        }
+        return false;
     }
 }

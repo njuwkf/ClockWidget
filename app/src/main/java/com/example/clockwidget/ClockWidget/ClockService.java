@@ -87,44 +87,34 @@ public class ClockService extends Service {
         rViews.setTextViewText(R.id.clock_time,str_time);
         rViews.setTextViewText(R.id.date_time,str_date);
         //时钟字体颜色变化（从sharepreferences中读取数据）
-        if("".equals(SaveUtils.getFontColor(this))){
-            Log.d(TAG,"ClockService_fontcolor:"+SaveUtils.getFontColor(this));
-            rViews.setTextColor(R.id.clock_time,Color.BLACK);
-        }else {
-            Log.d(TAG,"ClockService_fontcolor"+SaveUtils.getFontColor(this));
-            switch (SaveUtils.getFontColor(this)) {
-                case str_color_black:
-                    rViews.setTextColor(R.id.clock_time, Color.BLACK);
-                    break;
-                case str_color_white:
-                    rViews.setTextColor(R.id.clock_time, Color.WHITE);
-                    break;
-                case str_color_red:
-                    rViews.setTextColor(R.id.clock_time, Color.RED);
-                    break;
-                case str_color_yellow:
-                    rViews.setTextColor(R.id.clock_time, Color.YELLOW);
-                    break;
-                case str_color_green:
-                    rViews.setTextColor(R.id.clock_time, Color.GREEN);
-                    break;
-                case str_color_blue:
-                    rViews.setTextColor(R.id.clock_time, Color.BLUE);
-                    break;
-                default:
-                    break;
-            }
+        Log.d(TAG,"ClockService_fontcolor:"+SaveUtils.getFontColor(this));
+        switch (SaveUtils.getFontColor(this)) {
+            case str_color_black:
+                rViews.setTextColor(R.id.clock_time, Color.BLACK);
+                break;
+            case str_color_white:
+                rViews.setTextColor(R.id.clock_time, Color.WHITE);
+                break;
+            case str_color_red:
+                rViews.setTextColor(R.id.clock_time, Color.RED);
+                break;
+            case str_color_yellow:
+                rViews.setTextColor(R.id.clock_time, Color.YELLOW);
+                break;
+            case str_color_green:
+                rViews.setTextColor(R.id.clock_time, Color.GREEN);
+                break;
+            case str_color_blue:
+                rViews.setTextColor(R.id.clock_time, Color.BLUE);
+                break;
+            default:
+                break;
         }
         //时钟字体大小变化（从sharepreferences中读取数据）
-        if("".equals(SaveUtils.getFontSize(this))){
-            Log.d(TAG,"ClockService_fontsize"+SaveUtils.getFontSize(this));
-            rViews.setTextViewTextSize(R.id.clock_time, TypedValue.COMPLEX_UNIT_SP, 40);
-        }else {
-            Log.d(TAG,"ClockService_fontsize"+SaveUtils.getFontSize(this));
-            String str_fontsize = SaveUtils.getFontSize(this).substring(0, 2);
-            int font_size = Integer.parseInt(str_fontsize);
-            rViews.setTextViewTextSize(R.id.clock_time, TypedValue.COMPLEX_UNIT_SP, font_size);
-        }
+        Log.d(TAG,"ClockService_fontsize"+SaveUtils.getFontSize(this));
+        String str_fontsize = SaveUtils.getFontSize(this).substring(0, 2);
+        int font_size = Integer.parseInt(str_fontsize);
+        rViews.setTextViewTextSize(R.id.clock_time, TypedValue.COMPLEX_UNIT_SP, font_size);
         //刷新
         AppWidgetManager manager = AppWidgetManager.getInstance(getApplicationContext());
         ComponentName cName = new ComponentName(getApplicationContext(), ClockProvider.class);

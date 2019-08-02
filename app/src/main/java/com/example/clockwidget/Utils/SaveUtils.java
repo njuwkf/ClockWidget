@@ -22,7 +22,7 @@ public class SaveUtils {
     //提取字体颜色
     public static String getFontColor(Context context){
         SharedPreferences mSharedPreferences=context.getSharedPreferences("data",Context.MODE_MULTI_PROCESS);
-        String fontcolor=mSharedPreferences.getString("fontcolor",null);
+        String fontcolor=mSharedPreferences.getString("fontcolor","黑");
         return fontcolor;
     }
 
@@ -38,7 +38,7 @@ public class SaveUtils {
     //提取字体大小
     public static String getFontSize(Context context){
         SharedPreferences mSharedPreferences=context.getSharedPreferences("data",Context.MODE_MULTI_PROCESS);
-        String fontsize=mSharedPreferences.getString("fontsize",null);
+        String fontsize=mSharedPreferences.getString("fontsize","40sp");
         return fontsize;
     }
 
@@ -54,11 +54,11 @@ public class SaveUtils {
     //提取日期格式
     public static String getTimeFormat(Context context){
         SharedPreferences mSharedPreferences=context.getSharedPreferences("data",Context.MODE_MULTI_PROCESS);
-        String timeformat=mSharedPreferences.getString("timeformat",null);
+        String timeformat=mSharedPreferences.getString("timeformat","24小时制");
         return timeformat;
     }
 
-    //保存日期格式
+    //保存时钟样式
     public static boolean saveClockStyle(Context context, String clockstyle) {
         SharedPreferences mSharedPreferences = context.getSharedPreferences("data", Context.MODE_MULTI_PROCESS);
         SharedPreferences.Editor edit = mSharedPreferences.edit();
@@ -67,10 +67,10 @@ public class SaveUtils {
         return true;
     }
 
-    //提取日期格式
+    //提取时钟样式
     public static String getClockStyle(Context context){
         SharedPreferences mSharedPreferences=context.getSharedPreferences("data",Context.MODE_MULTI_PROCESS);
-        String clockstyle=mSharedPreferences.getString("clockstyle",null);
+        String clockstyle=mSharedPreferences.getString("clockstyle","数字时钟");
         return clockstyle;
     }
 
