@@ -51,7 +51,6 @@ public class DateUtils {
     public static void showTimePickerDialog(Activity activity, int themeResId, final TextView tv) {
         Calendar mCalendar = Calendar.getInstance();
         // 创建一个TimePickerDialog实例，并把它显示出来
-        // 解释一哈，Activity是context的子类
         new TimePickerDialog(activity, themeResId,
                 // 绑定监听器
                 new TimePickerDialog.OnTimeSetListener() {

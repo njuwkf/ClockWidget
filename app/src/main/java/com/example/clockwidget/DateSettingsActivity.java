@@ -112,10 +112,10 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
                 timeFormatChoice();
                 break;
             case R.id.ll_fontcolor:
-                showDialog(mfontcolor_text,mfontcolorList,6);
+                showDialog(mfontcolor_text,mfontcolorList,3);
                 break;
             case R.id.ll_fontsize:
-                showDialog(mfontsize_text,mfontsizeList,21);
+                showDialog(mfontsize_text,mfontsizeList,3);
                 break;
             case R.id.ll_clockstyle:
                 clockStyleChoice();
@@ -147,10 +147,10 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
         final WheelView wheelView = outerView.findViewById(R.id.wheel_view);
         wheelView.setOffset(2);// 对话框中当前项上面和下面的项数
         wheelView.setItems(dataList);// 设置数据源
-        wheelView.setSeletion(selected);// 默认选中第三项
+        wheelView.setSeletion(selected);// 默认选中
         wheelView.setOnWheelViewListener(listener);
 
-        // 显示对话框，点击确认后将所选项的值显示到Button上
+        // 显示对话框，点击确认后将所选项的值显示
         AlertDialog alertDialog = new AlertDialog.Builder(this)
                 .setView(outerView)
                 .setPositiveButton("确认",
@@ -193,7 +193,7 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
         builder.show();
     }
 
-    //闹钟格式改变
+    //时钟样式改变
     private void clockStyleChoice() {
         final String items[] = {"数字时钟", "图形时钟"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this,0);
@@ -212,13 +212,4 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
     }
 
 
-    //判断Sharedpreferences中数据是否存在
-    private boolean isExistDataInSp(ArrayList<String> mdataList,String dataInSp){
-        for(String strdata:mdataList){
-            if(strdata.equals(dataInSp)){
-                return true;
-            }
-        }
-        return false;
-    }
 }

@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.RemoteViews;
 import com.example.clockwidget.DateSettingsActivity;
 import com.example.clockwidget.R;
@@ -16,12 +17,13 @@ import com.example.clockwidget.R;
  **/
 
 public class ClockProvider extends AppWidgetProvider {
-    private static final String TAG = "AppWidgetProvider";
+    private static final String TAG = "ClockProvider";
     private static final String ACTION_TIMEZONE_CHANGED = Intent.ACTION_TIMEZONE_CHANGED;
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
                          int[] appWidgetIds) {
+        Log.d(TAG,"ClockProvider_onUpdate");
         for(int i=0;i<appWidgetIds.length;i++){
             Intent intent = new Intent(context, DateSettingsActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
@@ -36,6 +38,7 @@ public class ClockProvider extends AppWidgetProvider {
     public void onEnabled(Context context) {
         super.onEnabled(context);
         // 启动Service
+        Log.d(TAG,"ClockProvider_onEnabled");
         context.startService(new Intent(context, ClockService.class));
     }
 
@@ -43,11 +46,13 @@ public class ClockProvider extends AppWidgetProvider {
     public void onDisabled(Context context) {
         super.onDisabled(context);
         //停止Service
+        Log.d(TAG,"ClockProvider_onDisabled");
         context.stopService(new Intent(context, ClockService.class));
     }
 
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
+        Log.d(TAG,"ClockProvider_onDeleted");
         super.onDeleted(context, appWidgetIds);
     }
 }
