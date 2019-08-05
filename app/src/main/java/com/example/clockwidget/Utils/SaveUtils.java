@@ -3,6 +3,9 @@ package com.example.clockwidget.Utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * @auther 吴科烽
  * @date 2019-07-31
@@ -10,11 +13,35 @@ import android.content.SharedPreferences;
  **/
 
 public class SaveUtils {
-    //保存字体颜色
-    public static boolean saveFontColor(Context context, String fontcolor) {
+
+    //提取日期
+    public static String getDate(Context context){
+        SharedPreferences mSharedPreferences=context.getSharedPreferences("data",Context.MODE_MULTI_PROCESS);
+        String str_date=mSharedPreferences.getString("date", new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis())));
+        return str_date;
+    }
+
+    //保存日期
+    public static boolean saveDate(Context context, String date) {
         SharedPreferences sp = context.getSharedPreferences("data", Context.MODE_MULTI_PROCESS);
         SharedPreferences.Editor edit = sp.edit();
-        edit.putString("fontcolor", fontcolor);
+        edit.putString("date", date);
+        edit.commit();
+        return true;
+    }
+
+    //提取时间
+    public static String getTime(Context context){
+        SharedPreferences mSharedPreferences=context.getSharedPreferences("data",Context.MODE_MULTI_PROCESS);
+        String str_time=mSharedPreferences.getString("time", new SimpleDateFormat("HH:mm:ss").format(new Date(System.currentTimeMillis())));
+        return str_time;
+    }
+
+    //保存时间
+    public static boolean saveTime(Context context, String time) {
+        SharedPreferences sp = context.getSharedPreferences("data", Context.MODE_MULTI_PROCESS);
+        SharedPreferences.Editor edit = sp.edit();
+        edit.putString("time", time);
         edit.commit();
         return true;
     }
@@ -24,6 +51,14 @@ public class SaveUtils {
         SharedPreferences mSharedPreferences=context.getSharedPreferences("data",Context.MODE_MULTI_PROCESS);
         String fontcolor=mSharedPreferences.getString("fontcolor","黑");
         return fontcolor;
+    }
+    //保存字体颜色
+    public static boolean saveFontColor(Context context, String fontcolor) {
+        SharedPreferences sp = context.getSharedPreferences("data", Context.MODE_MULTI_PROCESS);
+        SharedPreferences.Editor edit = sp.edit();
+        edit.putString("fontcolor", fontcolor);
+        edit.commit();
+        return true;
     }
 
     //保存字体大小

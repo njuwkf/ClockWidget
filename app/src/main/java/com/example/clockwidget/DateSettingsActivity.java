@@ -38,6 +38,7 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
 
 
     private String selectText = "";
+    private static final String str_digital_clock = "数字时钟";
     private ArrayList<String> mfontcolorList = new ArrayList<>();
     private ArrayList<String> mfontsizeList = new ArrayList<>();
     @Override
@@ -94,10 +95,12 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
     private void initListeners(){
         mdate_linearLayout.setOnClickListener(this);
         mtime_linearLayout.setOnClickListener(this);
-        mtimeformat_linearLayout.setOnClickListener(this);
-        mfontcolor_linearLayout.setOnClickListener(this);
-        mfontsize_linearLayout.setOnClickListener(this);
         mclockstyle_linearLayout.setOnClickListener(this);
+        if(str_digital_clock.equals(SaveUtils.getClockStyle(this))) {
+            mtimeformat_linearLayout.setOnClickListener(this);
+            mfontcolor_linearLayout.setOnClickListener(this);
+            mfontsize_linearLayout.setOnClickListener(this);
+        }
     }
 
     @Override
@@ -108,6 +111,7 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
                 break;
             case R.id.ll_time:
                 DateUtils.showTimePickerDialog(DateSettingsActivity.this,2, mtime_text);
+                break;
             case R.id.ll_timeformat:
                 timeFormatChoice();
                 break;
