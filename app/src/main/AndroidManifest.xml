@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.clockwidget">
 
     <application
@@ -16,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".DateSettingsActivity"></activity>
+        <activity android:name=".ZonePicker"></activity>
         <receiver android:name="com.example.clockwidget.ClockWidget.ClockProvider" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -30,5 +32,6 @@
         <service android:name=".ClockWidget.ClockService"></service>
 
     </application>
-
+    <uses-permission android:name="android.permission.SET_TIME_ZONE"
+        tools:ignore="ProtectedPermissions" />
 </manifest>

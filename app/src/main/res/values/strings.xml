@@ -12,10 +12,7 @@
     <string name="hour">时</string>
     <string name="minute">分</string>
 
-    <string name="select_date">选择日期</string>
-    <string name="current_date">当前日期</string>
-    <string name="select_time">选择时间</string>
-    <string name="current_time">当前时间</string>
+
     <string name="select_timeformat">选择时间格式</string>
     <string name="current_timeformat">当前时间格式</string>
     <string name="select_fontcolor">选择字体颜色</string>
@@ -25,4 +22,6 @@
     <string name="current_fontsize">当前字体大小</string>
     <string name="select_clockstyle">选择时钟样式</string>
     <string name="current_clockstyle">当前时钟样式</string>
+    <string name="select_timezones">选择时区</string>
+    <string name="current_timezones">当前时区</string>
 </resources>

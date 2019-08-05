@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.IBinder;
+import android.text.format.Time;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.example.clockwidget.Utils.SaveUtils;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -69,26 +71,24 @@ public class ClockService extends Service {
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void updateView(){
         RemoteViews rViews = new RemoteViews(getPackageName(), R.layout.clockwidge_activity);
+        String str_zone = SaveUtils.getZoneId(this);
+        TimeZone tz = TimeZone.getTimeZone(str_zone);
+        Time time = new Time(tz.getID());
         String str_time="";
-        String str_date = getDateString() + "  " + getDateInWeek();
+        String str_date = getDateString(time) + "  " + getDateInWeek(time);
 
-        //系统时间
-        Long currentTime = System.currentTimeMillis();
 
         if(str_digital_clock.equals(SaveUtils.getClockStyle(this))) {
             rViews.setViewVisibility(R.id.view_clock,View.GONE);
             rViews.setViewVisibility(R.id.date_time,View.VISIBLE);
             rViews.setViewVisibility(R.id.clock_time,View.VISIBLE);
-            setTimeFormat(str_time, str_date, currentTime, rViews);
+            setTimeFormat(str_time, str_date, time, rViews);
             setText(rViews);
         }else{
             rViews.setViewVisibility(R.id.clock_time,View.GONE);
             rViews.setViewVisibility(R.id.date_time,View.GONE);
             rViews.setViewVisibility(R.id.view_clock,View.VISIBLE);
-            SimpleDateFormat mformatter = new SimpleDateFormat("hh:mm:ss");
-            Date date = new Date(currentTime);
-            String view_time = mformatter.format(date);
-            ViewClock.drawBitmap(mbitmap,view_time);
+            ViewClock.drawBitmap(mbitmap,setViewTime(time));
             rViews.setImageViewBitmap(R.id.view_clock,mbitmap);
         }
 
@@ -106,18 +106,17 @@ public class ClockService extends Service {
     }
 
     /**
-     * 获得周几
+     * 获得周几(基姆拉尔森公式)
      * @param
      * @return
      */
-    private String getDateInWeek() {
+    private String getDateInWeek(Time time) {
+        time.setToNow();
+        int year = time.year;
+        int month = time.month + 1;
+        int day = time.monthDay;
         String[] mweekdays = { "周日", "周一", "周二", "周三", "周四", "周五", "周六" };
-        Calendar mCalendar = Calendar.getInstance();
-        Date mDate=new Date();
-        mCalendar.setTime(mDate);
-        int weekday = mCalendar.get(Calendar.DAY_OF_WEEK) - 1; // 指示一个星期中的某天。
-        if (weekday < 0)
-            weekday = 0;
+        int weekday = (1+day+2*month+3*(month+1)/5+year+year/4-year/100+year/400)%7;
         return mweekdays[weekday];
     }
     /**
@@ -125,35 +124,34 @@ public class ClockService extends Service {
      * @param
      * @return
      */
-    private String getDateString(){
-        long currentTime = System.currentTimeMillis();
-        Date date = new Date(currentTime);
-        SimpleDateFormat date_formatter = new SimpleDateFormat("yyyy-MM-dd");
-        String[] mstr_now=date_formatter.format(date).toString().split("-");
-        String mstr_month = mstr_now[1].replaceAll("^(0+)", "");
-        String mstr_day = mstr_now[2].replaceAll("^(0+)", "");
-        String mstr_date=mstr_month+"月"+mstr_day+"日";
-        return mstr_date;
+    private String getDateString(Time time){
+        time.setToNow();
+        int month = time.month + 1;
+        int day = time.monthDay;
+        return  month + "月" + day + "日" ;
     }
 
     //时间格式（24小时制or12小时制）
-    private void setTimeFormat(String str_time,String str_date,Long currentTime,RemoteViews rViews){
+    private void setTimeFormat(String str_time,String str_date,Time time,RemoteViews rViews){
+        time.setToNow();
+        int hour = time.hour;
+        int minute = time.minute;
+        int sec = time.second;
         if(str_twelvehour.equals(SaveUtils.getTimeFormat(this))){
-            SimpleDateFormat twelve_formatter = new SimpleDateFormat("hh:mm:ss");
-            Date date = new Date(currentTime);
-            str_time = twelve_formatter.format(date);
-            Calendar mCalendar = Calendar.getInstance();
-            if(mCalendar.get(Calendar.AM_PM) == 0){
+            if(hour<13 && hour >0){
                 //上午
                 str_date = str_date + " "+str_am;
-            }else {
+                str_time = String.format("%02d:%02d:%02d",hour,minute,sec);
+            }else if(hour == 0){
+                str_date = str_date + " "+str_pm;
+                str_time = String.format("12:%02d:%02d",minute,sec);
+            }else{
                 //下午
                 str_date = str_date + " "+str_pm;
+                str_time = String.format("%02d:%02d:%02d",hour-12,minute,sec);
             }
         }else{
-            SimpleDateFormat twentyfour_formatter = new SimpleDateFormat("HH:mm:ss");
-            Date date = new Date(currentTime);
-            str_time = twentyfour_formatter.format(date);
+            str_time = String.format("%02d:%02d:%02d",hour,minute,sec);
         }
         //显示当前时间
         Log.d(TAG,"ClockService_time:"+str_time);
@@ -195,5 +193,25 @@ public class ClockService extends Service {
         String str_fontsize = SaveUtils.getFontSize(this).substring(0, 2);
         int font_size = Integer.parseInt(str_fontsize);
         rViews.setTextViewTextSize(R.id.clock_time, TypedValue.COMPLEX_UNIT_SP, font_size);
+    }
+
+
+    //图形时钟时间（12小时制）
+    private String setViewTime(Time time){
+        String str_viewtime;
+        time.setToNow();
+        int hour = time.hour;
+        int minute = time.minute;
+        int sec = time.second;
+        if(hour<13 && hour >0){
+            //上午
+            str_viewtime = String.format("%d:%d:%d",hour,minute,sec);
+        }else if(hour == 0){
+            str_viewtime = String.format("12:%d:%d",minute,sec);
+        }else{
+            //下午
+            str_viewtime = String.format("%d:%d:%d",hour-12,minute,sec);
+        }
+        return str_viewtime;
     }
 }
