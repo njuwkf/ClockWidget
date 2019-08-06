@@ -236,7 +236,6 @@ public class DateToFestivalsUtil {
                     if("12".equals(lmonth_v)){ // 除夕夜需要特殊处理
                         if((daysOfMonth==29&&day==29)||(daysOfMonth==30&&day==30)){
                             return ldv;
-                            //return "除夕";
                         }
                     }
                     if(ld.trim().equals(lmd.trim())){
@@ -252,7 +251,7 @@ public class DateToFestivalsUtil {
                     return motherOrFatherDay;
                 }
             }
-            return null;
+            return "";
         }
 
 

@@ -222,9 +222,10 @@ public class ClockService extends Service {
         int month = time.month + 1;
         int day = time.monthDay;
         String str_fest = year + "-" + month + "-" +day;
-        Log.d(TAG_LifeCycle,str_fest);
         if(SaveUtils.getFestivalState(this)){
             str_date = str_date + " " +DateToFestivalsUtil.DateToYearMothDay(str_fest);
+        }else{
+            str_date = str_date;
         }
         rViews.setTextViewText(R.id.date_time,str_date);
     }
