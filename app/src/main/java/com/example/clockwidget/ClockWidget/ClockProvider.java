@@ -18,7 +18,6 @@ import com.example.clockwidget.R;
 
 public class ClockProvider extends AppWidgetProvider {
     private static final String TAG = "ClockProvider";
-    private static final String ACTION_TIMEZONE_CHANGED = Intent.ACTION_TIMEZONE_CHANGED;
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,

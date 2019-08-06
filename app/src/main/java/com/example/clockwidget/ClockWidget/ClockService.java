@@ -5,9 +5,13 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
+import android.os.SystemClock;
 import android.text.format.Time;
 import android.util.Log;
 import android.util.TypedValue;
@@ -20,13 +24,8 @@ import com.example.clockwidget.DrawView.ViewClock;
 import com.example.clockwidget.R;
 import com.example.clockwidget.Utils.DateToFestivalsUtil;
 import com.example.clockwidget.Utils.SaveUtils;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.TimeZone;
-import java.util.Timer;
-import java.util.TimerTask;
+
 
 /**
  * @auther 吴科烽
@@ -35,7 +34,7 @@ import java.util.TimerTask;
  **/
 
 public class ClockService extends Service {
-    private Timer timer;
+    private Handler mHandler = new Handler(Looper.getMainLooper());
     private static final String str_twelvehour = "12小时制";
     private static final String str_digital_clock = "数字时钟";
     private static final String TAG = "ClockService";
@@ -48,8 +47,8 @@ public class ClockService extends Service {
     private static final String str_color_yellow = "黄";
     private static final String str_color_green = "绿";
     private static final String str_color_blue = "蓝";
-    private Bitmap mbitmap = Bitmap.createBitmap(200,200, Bitmap.Config.ARGB_8888);
-
+    private Bitmap mbitmap = Bitmap.createBitmap(180,180, Bitmap.Config.ARGB_8888);
+    private Canvas mCanvas = new Canvas(mbitmap);
     @Override
     public IBinder onBind(Intent intent){
         return null;
@@ -57,16 +56,10 @@ public class ClockService extends Service {
 
     @Override
     public void onCreate() {
-        Log.d(TAG_LifeCycle,"ClockService_onCreate");
+        Log.d(TAG_LifeCycle, "ClockService_onCreate");
         super.onCreate();
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-            @Override
-            public void run() {
-                updateView();
-            }
-        },0,1000);
+    //    mHandler.post(mTicker);
+        mHandler.postAtTime(mTicker,SystemClock.uptimeMillis()+(1000-SystemClock.uptimeMillis()%1000));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -75,7 +68,6 @@ public class ClockService extends Service {
         String str_zone = SaveUtils.getZoneId(this);
         TimeZone tz = TimeZone.getTimeZone(str_zone);
         Time time = new Time(tz.getID());
-
 
         if(str_digital_clock.equals(SaveUtils.getClockStyle(this))) {
             rViews.setViewVisibility(R.id.view_clock,View.GONE);
@@ -90,7 +82,8 @@ public class ClockService extends Service {
             rViews.setViewVisibility(R.id.clock_time,View.GONE);
             rViews.setViewVisibility(R.id.date_time,View.GONE);
             rViews.setViewVisibility(R.id.view_clock,View.VISIBLE);
-            ViewClock.drawBitmap(mbitmap,setViewTime(time));
+
+            ViewClock.drawBitmap(mbitmap,mCanvas,setViewTime(time));
             rViews.setImageViewBitmap(R.id.view_clock,mbitmap);
         }
 
@@ -104,7 +97,7 @@ public class ClockService extends Service {
     public void onDestroy() {
         Log.d(TAG_LifeCycle,"ClockService_onDestroy");
         super.onDestroy();
-        timer = null;
+        mHandler.removeCallbacks(mTicker);
     }
 
     /**
@@ -205,12 +198,12 @@ public class ClockService extends Service {
         int sec = time.second;
         if(hour<13 && hour >0){
             //上午
-            str_viewtime = String.format("%d:%d:%d",hour,minute,sec);
+            str_viewtime = String.format("%d:%d:%d:1",hour,minute,sec);
         }else if(hour == 0){
-            str_viewtime = String.format("12:%d:%d",minute,sec);
+            str_viewtime = String.format("12:%d:%d:0",minute,sec);
         }else{
             //下午
-            str_viewtime = String.format("%d:%d:%d",hour-12,minute,sec);
+            str_viewtime = String.format("%d:%d:%d:0",hour-12,minute,sec);
         }
         return str_viewtime;
     }
@@ -229,4 +222,18 @@ public class ClockService extends Service {
         }
         rViews.setTextViewText(R.id.date_time,str_date);
     }
+
+    private final Runnable mTicker = new Runnable() {
+        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+        @Override
+        public void run() {
+            updateView();
+            Long now = SystemClock.uptimeMillis();
+            Long next =  now + (1000 - now % 1000);
+            mHandler.postAtTime(mTicker, next);
+            Log.d(TAG,now + " " + next);
+        }
+    };
+
+
 }

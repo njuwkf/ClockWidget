@@ -5,6 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
+import android.graphics.Rect;
+import android.hardware.camera2.params.BlackLevelPattern;
 import android.util.Log;
 
 
@@ -22,10 +24,14 @@ public class ViewClock {
     private static int mHourLine;
     private static int mMinuateLine;
     private static int mSecondLine;
+    private static int mHour;
+    private static int mMinute;
+    private static int mSecond;
+    private static int ismorning;
+    private static float mDegrees;
 
-    public static void drawBitmap(Bitmap mbitmap, String str_time) {
-
-        Canvas mCanvas = new Canvas(mbitmap);
+    private static Paint mPaint = new Paint();
+    public static void drawBitmap(Bitmap mbitmap,Canvas mCanvas, String str_time) {
         mCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
         radius = (float) (Math.min(mbitmap.getWidth()/2, mbitmap.getHeight()/2) - padding);
         Log.d(TAG,mbitmap.getHeight()+"");
@@ -35,80 +41,112 @@ public class ViewClock {
         String[] split = str_time.split(":");
 
         //拿到当前时间
-        int mHour = Integer.parseInt(split[0]);
-        int mMinute = Integer.parseInt(split[1]);
-        int mSecond = Integer.parseInt(split[2]);
-        float mDegrees;
+        mHour = Integer.parseInt(split[0]);
+        mMinute = Integer.parseInt(split[1]);
+        mSecond = Integer.parseInt(split[2]);
+        ismorning = Integer.parseInt(split[3]);
+        drawCircle(mCanvas);
+        drawDegree(mCanvas,mbitmap);
+        drawHourLine(mCanvas,mbitmap);
+        drawMinLine(mCanvas,mbitmap);
+        drawSecLine(mCanvas,mbitmap);
+        drawCircleCenter(mCanvas,mbitmap);
+        drawAMOrPM(mCanvas,mbitmap);
+    }
 
-        //画圆
-        Paint paint_circle = new Paint();
-        paint_circle.setColor(Color.BLACK);
-        paint_circle.setStyle(Paint.Style.STROKE);
-        paint_circle.setStrokeWidth(3);
-        paint_circle.setAntiAlias(true);
-        mCanvas.drawCircle(cx, cy, radius, paint_circle);
+    //画圆
+    private static void drawCircle(Canvas mCanvas){
+        mPaint.setColor(Color.WHITE);
+        mPaint.setStyle(Paint.Style.FILL);
+        mPaint.setStrokeWidth(3);
+        mPaint.setAntiAlias(true);
+        mCanvas.drawCircle(cx, cy, radius, mPaint);
+    }
 
-
-        //画刻度
-        Paint paint_scale = new Paint();
-        paint_scale.setColor(Color.BLACK);
-        paint_scale.setStyle(Paint.Style.FILL);
-        paint_scale.setStrokeWidth(3);
+    //画刻度和数字
+    private static void drawDegree(Canvas mCanvas,Bitmap mbitmap){
+        mPaint.setColor(Color.BLACK);
+        mPaint.setStyle(Paint.Style.FILL);
+        mPaint.setStrokeWidth(3);
         for (int i = 0; i < 60; i++) {
             if (i % 5 == 0) {
                 //绘制整点刻度
-                paint_scale.setStrokeWidth(3);
-                mCanvas.drawLine(cx, cy - radius, cx, cy - radius + 15, paint_scale);
+                mPaint.setColor(Color.BLACK);
+                mPaint.setStrokeWidth(1);
+                mCanvas.drawLine(cx, cy - radius+2, cx, cy - radius + 15, mPaint);
+                //绘制数字
+                String text = ((i / 5) == 0 ? 12 : (i / 5)) + "";
+                mPaint.setColor(Color.BLACK);
+                mCanvas.drawText(text, mbitmap.getWidth() / 2 , 30, mPaint);
+
             } else {
                 //绘制分钟刻度
-                paint_scale.setStrokeWidth(1);
-                mCanvas.drawLine(cx, cy - radius, cx, cy - radius + 8, paint_scale);
+                mPaint.setColor(Color.GRAY);
+                mPaint.setStrokeWidth(1);
+                mCanvas.drawLine(cx, cy - radius+2, cx, cy - radius + 12, mPaint);
             }
             //绕着(x,y)旋转6°
             mCanvas.rotate(6, cx, cy);
         }
+    }
 
-        //绘制时针
-        Paint paint_hour = new Paint();
-        paint_hour.setColor(Color.RED);
-        paint_hour.setStrokeWidth(3);
-        paint_hour.setStrokeCap(Paint.Cap.ROUND);
-        paint_hour.setAntiAlias(true);
+    //绘制时针
+    private static void drawHourLine(Canvas mCanvas,Bitmap mbitmap){
+
+        mPaint.setColor(Color.BLACK);
+        mPaint.setStrokeWidth(4);
+        mPaint.setStrokeCap(Paint.Cap.ROUND);
+        mPaint.setAntiAlias(true);
         mHourLine = (int) (mbitmap.getWidth()/2*0.4);
         mDegrees = mHour*30+mMinute/2;
         mCanvas.save();
         mCanvas.rotate(mDegrees, mbitmap.getWidth() / 2, mbitmap.getWidth() / 2);
-        mCanvas.drawLine(mbitmap.getWidth() / 2, mbitmap.getHeight() / 2, mbitmap.getWidth() / 2, mbitmap.getWidth() / 2 - mHourLine, paint_hour);
+        mCanvas.drawLine(mbitmap.getWidth() / 2, mbitmap.getHeight() / 2+15, mbitmap.getWidth() / 2, mbitmap.getWidth() / 2 - mHourLine, mPaint);
         mCanvas.restore();
+    }
 
-        //绘制分针
-        Paint paint_min = new Paint();
-        paint_min.setColor(Color.BLUE);
-        paint_min.setStrokeWidth(2);
-        paint_min.setStrokeCap(Paint.Cap.ROUND);
-        paint_min.setAntiAlias(true);
+    //绘制分针
+    private static void drawMinLine(Canvas mCanvas,Bitmap mbitmap){
+        mPaint.setColor(Color.BLACK);
+        mPaint.setStrokeWidth(3);
+        mPaint.setStrokeCap(Paint.Cap.ROUND);
+        mPaint.setAntiAlias(true);
         mMinuateLine = (int) (mbitmap.getWidth()/2*0.6);
         mDegrees = mMinute*6+mSecond/10;
         mCanvas.save();
         mCanvas.rotate(mDegrees, mbitmap.getWidth() / 2, mbitmap.getWidth() / 2);
-        mCanvas.drawLine(mbitmap.getWidth() / 2, mbitmap.getHeight() / 2, mbitmap.getWidth() / 2, mbitmap.getWidth() / 2 - mMinuateLine, paint_min);
+        mCanvas.drawLine(mbitmap.getWidth() / 2, mbitmap.getHeight() / 2+15, mbitmap.getWidth() / 2, mbitmap.getWidth() / 2 - mMinuateLine, mPaint);
         mCanvas.restore();
+    }
 
-        //绘制秒针
-        Paint paint_sec = new Paint();
-        paint_sec.setColor(Color.GRAY);
-        paint_sec.setStrokeWidth(1);
-        paint_sec.setStrokeCap(Paint.Cap.ROUND);
-        paint_sec.setAntiAlias(true);
-        mSecondLine = (int) (mbitmap.getWidth()/2*0.8);
+    //绘制秒针
+    private static void drawSecLine(Canvas mCanvas,Bitmap mbitmap){
+        mPaint.setColor(Color.RED);
+        mPaint.setStrokeWidth(2);
+        mPaint.setStrokeCap(Paint.Cap.ROUND);
+        mPaint.setAntiAlias(true);
+        mSecondLine = (int) (mbitmap.getWidth()/2*0.9);
         mDegrees = mSecond*6;
         mCanvas.save();
         mCanvas.rotate(mDegrees, mbitmap.getWidth() / 2, mbitmap.getWidth() / 2);
-        mCanvas.drawLine(mbitmap.getWidth() / 2, mbitmap.getHeight() / 2, mbitmap.getWidth() / 2, mbitmap.getWidth() / 2 - mSecondLine, paint_sec);
+        mCanvas.drawLine(mbitmap.getWidth() / 2, mbitmap.getHeight() / 2+20, mbitmap.getWidth() / 2, mbitmap.getWidth() / 2 - mSecondLine, mPaint);
         mCanvas.restore();
+    }
 
-        //绘制圆心
-        paint_circle.setStyle(Paint.Style.FILL);
-        mCanvas.drawCircle(cx, cy, 2, paint_circle);
+    //绘制圆心
+    private static void drawCircleCenter(Canvas mCanvas,Bitmap mbitmap){
+        mPaint.setStyle(Paint.Style.FILL);
+        mCanvas.drawCircle(cx, cy, 5, mPaint);
+    }
+
+    //绘制PM or AM
+    private static void drawAMOrPM(Canvas mCanvas,Bitmap mbitmap) {
+        mPaint.setColor(Color.BLACK);
+        mPaint.setTextAlign(Paint.Align.CENTER);
+        if (ismorning == 0) {
+            mCanvas.drawText("PM", mbitmap.getWidth() / 2, mbitmap.getHeight() / 2 + 40, mPaint);
+        } else {
+            mCanvas.drawText("AM", mbitmap.getWidth() / 2, mbitmap.getHeight() / 2 + 40, mPaint);
+        }
     }
 }
