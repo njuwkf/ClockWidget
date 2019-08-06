@@ -91,7 +91,7 @@ public class SaveUtils {
         return timezone;
     }
 
-    //保存时区
+    //保存时区id
     public static void saveZoneId(Context context, String timezone) {
         SharedPreferences mSharedPreferences = context.getSharedPreferences("data", Context.MODE_MULTI_PROCESS);
         SharedPreferences.Editor edit = mSharedPreferences.edit();
@@ -99,10 +99,25 @@ public class SaveUtils {
         edit.commit();
     }
 
-    //提取时区
+    //提取时区id
     public static String getZoneId(Context context){
         SharedPreferences mSharedPreferences=context.getSharedPreferences("data",Context.MODE_MULTI_PROCESS);
         String zoneid=mSharedPreferences.getString("zoneid","Asia/Shanghai");
         return zoneid;
+    }
+
+    //保存节日提醒状态
+    public static void saveFestivalState(Context context, boolean festivalstate) {
+        SharedPreferences mSharedPreferences = context.getSharedPreferences("data", Context.MODE_MULTI_PROCESS);
+        SharedPreferences.Editor edit = mSharedPreferences.edit();
+        edit.putBoolean("festivalstate", festivalstate);
+        edit.commit();
+    }
+
+    //提取节日提醒状态
+    public static boolean getFestivalState(Context context){
+        SharedPreferences mSharedPreferences=context.getSharedPreferences("data",Context.MODE_MULTI_PROCESS);
+        boolean festivalstate=mSharedPreferences.getBoolean("festivalstate",false);
+        return festivalstate;
     }
 }

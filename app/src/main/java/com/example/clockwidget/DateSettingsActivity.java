@@ -8,10 +8,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.clockwidget.Utils.SaveUtils;
+import com.suke.widget.SwitchButton;
 
 import java.util.ArrayList;
 
@@ -35,6 +38,7 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
     private TextView mfontsize_text;
     private TextView mclockstyle_text;
     private TextView mtimezone_text;
+    private SwitchButton mfestival_button;
 
     private String selectText = "";
 
@@ -65,12 +69,20 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
         mfontsize_text = findViewById(R.id.tv_selected_size);
         mclockstyle_text = findViewById(R.id.tv_selected_clockstyle);
         mtimezone_text = findViewById(R.id.tv_selected_timezone);
+        mfestival_button = findViewById(R.id.festival_button);
 
         mfontcolor_text.setText(SaveUtils.getFontColor(DateSettingsActivity.this));
         mfontsize_text.setText(SaveUtils.getFontSize(DateSettingsActivity.this));
         mtimeformat_text.setText(SaveUtils.getTimeFormat(DateSettingsActivity.this));
         mclockstyle_text.setText(SaveUtils.getClockStyle(DateSettingsActivity.this));
         mtimezone_text.setText(SaveUtils.getTimeZone(DateSettingsActivity.this));
+        mfestival_button.setChecked(SaveUtils.getFestivalState(DateSettingsActivity.this));//设置为真，即默认为真
+        mfestival_button.isChecked();//被选中
+        mfestival_button.toggle();     //开关状态
+        mfestival_button.toggle(true);//开关有动画
+        mfestival_button.setShadowEffect(false);//禁用阴影效果
+        mfestival_button.setEnabled(true);//false为禁用按钮
+        mfestival_button.setEnableEffect(true);//false为禁用开关动画
     }
 
 
@@ -94,6 +106,17 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
     private void initListeners() {
         mclockstyle_linearLayout.setOnClickListener(this);
         mtimezone_linearLayout.setOnClickListener(this);
+        mfestival_button.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(SwitchButton view, boolean isChecked) {
+                SaveUtils.saveFestivalState(DateSettingsActivity.this,isChecked);
+                if(isChecked){
+                    Toast.makeText(DateSettingsActivity.this, "节日提醒开启", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(DateSettingsActivity.this, "节日提醒关闭", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         if (str_digital_clock.equals(SaveUtils.getClockStyle(this))) {
             mtimeformat_linearLayout.setOnClickListener(this);
             mfontcolor_linearLayout.setOnClickListener(this);

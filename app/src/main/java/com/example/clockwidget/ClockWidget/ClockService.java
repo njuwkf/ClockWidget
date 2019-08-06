@@ -18,6 +18,7 @@ import androidx.annotation.RequiresApi;
 
 import com.example.clockwidget.DrawView.ViewClock;
 import com.example.clockwidget.R;
+import com.example.clockwidget.Utils.DateToFestivalsUtil;
 import com.example.clockwidget.Utils.SaveUtils;
 
 import java.text.SimpleDateFormat;
@@ -74,15 +75,16 @@ public class ClockService extends Service {
         String str_zone = SaveUtils.getZoneId(this);
         TimeZone tz = TimeZone.getTimeZone(str_zone);
         Time time = new Time(tz.getID());
-        String str_time="";
-        String str_date = getDateString(time) + "  " + getDateInWeek(time);
 
 
         if(str_digital_clock.equals(SaveUtils.getClockStyle(this))) {
             rViews.setViewVisibility(R.id.view_clock,View.GONE);
             rViews.setViewVisibility(R.id.date_time,View.VISIBLE);
             rViews.setViewVisibility(R.id.clock_time,View.VISIBLE);
-            setTimeFormat(str_time, str_date, time, rViews);
+            String str_time="";
+            String str_date = getDateString(time) + " " + getDateInWeek(time);
+            str_date = str_date + " " + setTimeFormat(str_time,time,rViews);
+            setFestival(str_time,str_date,time,rViews);
             setText(rViews);
         }else{
             rViews.setViewVisibility(R.id.clock_time,View.GONE);
@@ -132,32 +134,30 @@ public class ClockService extends Service {
     }
 
     //时间格式（24小时制or12小时制）
-    private void setTimeFormat(String str_time,String str_date,Time time,RemoteViews rViews){
+    private String setTimeFormat(String str_time,Time time,RemoteViews rViews){
         time.setToNow();
         int hour = time.hour;
         int minute = time.minute;
         int sec = time.second;
+        String str_format = "";
         if(str_twelvehour.equals(SaveUtils.getTimeFormat(this))){
             if(hour<13 && hour >0){
                 //上午
-                str_date = str_date + " "+str_am;
+                str_format = str_am;
                 str_time = String.format("%02d:%02d:%02d",hour,minute,sec);
             }else if(hour == 0){
-                str_date = str_date + " "+str_pm;
+                str_format = str_pm;
                 str_time = String.format("12:%02d:%02d",minute,sec);
             }else{
                 //下午
-                str_date = str_date + " "+str_pm;
+                str_format = str_pm;
                 str_time = String.format("%02d:%02d:%02d",hour-12,minute,sec);
             }
         }else{
             str_time = String.format("%02d:%02d:%02d",hour,minute,sec);
         }
-        //显示当前时间
-        Log.d(TAG,"ClockService_time:"+str_time);
-        Log.d(TAG,"ClockService_date:"+str_date);
         rViews.setTextViewText(R.id.clock_time,str_time);
-        rViews.setTextViewText(R.id.date_time,str_date);
+        return str_format;
     }
 
 
@@ -213,5 +213,19 @@ public class ClockService extends Service {
             str_viewtime = String.format("%d:%d:%d",hour-12,minute,sec);
         }
         return str_viewtime;
+    }
+
+    //节日提醒
+    private void setFestival(String str_time,String str_date,Time time,RemoteViews rViews){
+        time.setToNow();
+        int year = time.year;
+        int month = time.month + 1;
+        int day = time.monthDay;
+        String str_fest = year + "-" + month + "-" +day;
+        Log.d(TAG_LifeCycle,str_fest);
+        if(SaveUtils.getFestivalState(this)){
+            str_date = str_date + " " +DateToFestivalsUtil.DateToYearMothDay(str_fest);
+        }
+        rViews.setTextViewText(R.id.date_time,str_date);
     }
 }

@@ -24,4 +24,5 @@
     <string name="current_clockstyle">当前时钟样式</string>
     <string name="select_timezones">选择时区</string>
     <string name="current_timezones">当前时区</string>
+    <string name="festival_reminder">节日提醒</string>
 </resources>
