@@ -1,26 +1,15 @@
-package com.example.clockwidget;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.TimeZone;
+package com.example.clockwidget.Activity;
 
-
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.Time;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -30,15 +19,24 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.clockwidget.R;
 import com.example.clockwidget.Utils.SaveUtils;
 
-public class ZonePicker extends Activity implements OnItemClickListener, TextWatcher {
-    private static final String TAG = "ZonePicker";
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.TimeZone;
+
+/**
+ * @auther 吴科烽
+ * @date 2019-08-05
+ * @describle 时区选择界面
+ **/
+public class ZonePickerActivity extends Activity implements OnItemClickListener, TextWatcher {
     //显示时区的列表
     private ListView listView;
     //存放时区信息的HashMap
     private HashMap<String, String> map = new HashMap<String, String>();
-    //这个数组只存放时区名，用于列表显示
+    //存放时区名，用于列表显示
     private ArrayList<String> list = new ArrayList<String>();
     //搜索输入框
     private EditText editText;
@@ -49,10 +47,9 @@ public class ZonePicker extends Activity implements OnItemClickListener, TextWat
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.zonepicker_activity);
-        listView = (ListView)findViewById(R.id.zone_list);
-        editText = (EditText)findViewById(R.id.search_zone);
+        listView = findViewById(R.id.zone_list);
+        editText = findViewById(R.id.search_zone);
         editText.addTextChangedListener(this);
-        //从xml文件中获得时区信息
         getdata();
         //列表显示
         name = new myadapter();
@@ -60,6 +57,7 @@ public class ZonePicker extends Activity implements OnItemClickListener, TextWat
         //列表单击事件监听
         listView.setOnItemClickListener(this);
     }
+
     //通过时区的id获得当时的时间
     public String getTime(String id) {
         TimeZone tz = TimeZone.getTimeZone(id);
@@ -79,22 +77,20 @@ public class ZonePicker extends Activity implements OnItemClickListener, TextWat
                 "分 " + sec +
                 "秒";
     }
-    //一次次的从xml文件获取信息
+
+    //从xml文件获取信息
     public void getdata() {
         try {
             map.clear();
             list.clear();
-            //获取信息的方法
-            Resources res = getResources();
-            XmlResourceParser xrp = res.getXml(R.xml.timezones);
-            //判断是否已经到了文件的末尾
+            Resources mResources = getResources();
+            XmlResourceParser xrp = mResources.getXml(R.xml.timezones);
             while (xrp.getEventType() != XmlResourceParser.END_DOCUMENT) {
                 if (xrp.getEventType() == XmlResourceParser.START_TAG) {
                     String name = xrp.getName();
                     if (name.equals("timezone")) {
-                        //关键词搜索，如果匹配，那么添加进去如果不匹配就不添加，如果没输入关键词“”,那么默认搜索全部
-                        if(xrp.getAttributeValue(1).indexOf(editText.getText().toString()) != -1)
-                        {
+                        //关键词搜索
+                        if(xrp.getAttributeValue(1).indexOf(editText.getText().toString()) != -1) {
                             //0标识id，1标识名称
                             map.put(xrp.getAttributeValue(1),
                                     xrp.getAttributeValue(0));
@@ -102,7 +98,6 @@ public class ZonePicker extends Activity implements OnItemClickListener, TextWat
                         }
                     }
                 }
-                //搜索过第一个信息后，接着搜索下一个
                 xrp.next();
             }
 
@@ -110,6 +105,7 @@ public class ZonePicker extends Activity implements OnItemClickListener, TextWat
             e.printStackTrace();
         }
     }
+
     //适配器类
     class myadapter extends BaseAdapter{
         Holder holder;
@@ -132,8 +128,8 @@ public class ZonePicker extends Activity implements OnItemClickListener, TextWat
         public View getView(int pos, View view, ViewGroup arg2) {
             holder = new Holder();
             if(view == null) {
-                view = LayoutInflater.from(ZonePicker.this).inflate(R.layout.timezone_item, null);
-                holder.view = (TextView)view.findViewById(R.id.item_zone);
+                view = LayoutInflater.from(ZonePickerActivity.this).inflate(R.layout.timezone_list_item, null);
+                holder.view = view.findViewById(R.id.item_zone);
                 view.setTag(holder);
             } else {
                 holder = (Holder) view.getTag();
@@ -146,16 +142,17 @@ public class ZonePicker extends Activity implements OnItemClickListener, TextWat
         }
     }
 
+
+    //点击后显示当前时区的时间
     @Override
     public void onItemClick(AdapterView<?> arg0, View view, int arg2, long arg3) {
-        //点击后显示当前时区的时间
-        TextView textView = (TextView)view.findViewById(R.id.item_zone);
+        TextView textView = view.findViewById(R.id.item_zone);
         SaveUtils.saveTimeZone(this,textView.getText().toString());
         SaveUtils.saveZoneId(this,map.get(textView.getText().toString()));
         Intent mIntent = new Intent();
         mIntent.putExtra("timezone",textView.getText().toString());
         setResult(2,mIntent);
-        Toast.makeText(ZonePicker.this, getTime(map.get(textView.getText().toString())), Toast.LENGTH_SHORT).show();
+        Toast.makeText(ZonePickerActivity.this, getTime(map.get(textView.getText().toString())), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -166,9 +163,10 @@ public class ZonePicker extends Activity implements OnItemClickListener, TextWat
     public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
     }
 
+
+    //当输入框改变时，重新获取数据并通知列表更新
     @Override
     public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-        //当输入框改变时，重新获取数据并通知列表更新
         getdata();
         name.notifyDataSetChanged();
     }

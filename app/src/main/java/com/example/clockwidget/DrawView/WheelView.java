@@ -1,4 +1,4 @@
-package com.example.clockwidget;
+package com.example.clockwidget.DrawView;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -17,6 +17,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+import com.example.clockwidget.R;
 
 import java.util.ArrayList;
 import java.util.List;

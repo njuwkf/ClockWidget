@@ -7,13 +7,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.RemoteViews;
-import com.example.clockwidget.DateSettingsActivity;
+import com.example.clockwidget.Activity.DateSettingsActivity;
 import com.example.clockwidget.R;
 
 /**
  * @auther 吴科烽
  * @date 2019-07-30
- * @describle TODO
+ * @describle WidgetProvider
  **/
 
 public class ClockProvider extends AppWidgetProvider {

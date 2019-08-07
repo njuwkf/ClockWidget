@@ -1,12 +1,15 @@
 package com.example.clockwidget.Utils;
 
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import static com.example.clockwidget.ConstUtils.DefaultSettingsConstUtils.default_festival_state;
+import static com.example.clockwidget.ConstUtils.DefaultSettingsConstUtils.str_default_clockstyle;
+import static com.example.clockwidget.ConstUtils.DefaultSettingsConstUtils.str_default_color;
+import static com.example.clockwidget.ConstUtils.DefaultSettingsConstUtils.str_default_fontsize;
+import static com.example.clockwidget.ConstUtils.DefaultSettingsConstUtils.str_default_timeformat;
+import static com.example.clockwidget.ConstUtils.DefaultSettingsConstUtils.str_default_timezone;
+import static com.example.clockwidget.ConstUtils.DefaultSettingsConstUtils.str_default_zoneid;
 
 /**
  * @auther 吴科烽
@@ -20,7 +23,7 @@ public class SaveUtils {
     //提取字体颜色
     public static String getFontColor(Context context){
         SharedPreferences mSharedPreferences=context.getSharedPreferences("data",Context.MODE_MULTI_PROCESS);
-        String fontcolor=mSharedPreferences.getString("fontcolor","黑");
+        String fontcolor=mSharedPreferences.getString("fontcolor",str_default_color);
         return fontcolor;
     }
     //保存字体颜色
@@ -42,7 +45,7 @@ public class SaveUtils {
     //提取字体大小
     public static String getFontSize(Context context){
         SharedPreferences mSharedPreferences=context.getSharedPreferences("data",Context.MODE_MULTI_PROCESS);
-        String fontsize=mSharedPreferences.getString("fontsize","40sp");
+        String fontsize=mSharedPreferences.getString("fontsize",str_default_fontsize);
         return fontsize;
     }
 
@@ -57,7 +60,7 @@ public class SaveUtils {
     //提取日期格式
     public static String getTimeFormat(Context context){
         SharedPreferences mSharedPreferences=context.getSharedPreferences("data",Context.MODE_MULTI_PROCESS);
-        String timeformat=mSharedPreferences.getString("timeformat","24小时制");
+        String timeformat=mSharedPreferences.getString("timeformat",str_default_timeformat);
         return timeformat;
     }
 
@@ -72,7 +75,7 @@ public class SaveUtils {
     //提取时钟样式
     public static String getClockStyle(Context context){
         SharedPreferences mSharedPreferences=context.getSharedPreferences("data",Context.MODE_MULTI_PROCESS);
-        String clockstyle=mSharedPreferences.getString("clockstyle","数字时钟");
+        String clockstyle=mSharedPreferences.getString("clockstyle",str_default_clockstyle);
         return clockstyle;
     }
 
@@ -87,7 +90,7 @@ public class SaveUtils {
     //提取时区
     public static String getTimeZone(Context context){
         SharedPreferences mSharedPreferences=context.getSharedPreferences("data",Context.MODE_MULTI_PROCESS);
-        String timezone=mSharedPreferences.getString("timezone","北京/中国");
+        String timezone=mSharedPreferences.getString("timezone",str_default_timezone);
         return timezone;
     }
 
@@ -102,7 +105,7 @@ public class SaveUtils {
     //提取时区id
     public static String getZoneId(Context context){
         SharedPreferences mSharedPreferences=context.getSharedPreferences("data",Context.MODE_MULTI_PROCESS);
-        String zoneid=mSharedPreferences.getString("zoneid","Asia/Shanghai");
+        String zoneid=mSharedPreferences.getString("zoneid",str_default_zoneid);
         return zoneid;
     }
 
@@ -117,7 +120,7 @@ public class SaveUtils {
     //提取节日提醒状态
     public static boolean getFestivalState(Context context){
         SharedPreferences mSharedPreferences=context.getSharedPreferences("data",Context.MODE_MULTI_PROCESS);
-        boolean festivalstate=mSharedPreferences.getBoolean("festivalstate",false);
+        boolean festivalstate=mSharedPreferences.getBoolean("festivalstate",default_festival_state);
         return festivalstate;
     }
 }

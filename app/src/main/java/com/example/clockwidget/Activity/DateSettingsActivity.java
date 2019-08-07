@@ -1,31 +1,41 @@
-package com.example.clockwidget;
+package com.example.clockwidget.Activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.clockwidget.R;
 import com.example.clockwidget.Utils.SaveUtils;
+import com.example.clockwidget.DrawView.WheelView;
 import com.suke.widget.SwitchButton;
 
 import java.util.ArrayList;
 
+import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_color_black;
+import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_color_blue;
+import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_color_green;
+import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_color_red;
+import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_color_white;
+import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_color_yellow;
+import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_digital_clock;
+import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_twelvehour;
+import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_twentyfourhour;
+import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_view_clock;
+
 /**
  * @auther 吴科烽
  * @date 2019-07-31
- * @describle TODO
+ * @describle 设置界面
  **/
 
 public class DateSettingsActivity extends Activity implements View.OnClickListener {
-    private static final String TAG = "DateSettingsActivity";
 
     private LinearLayout mtimeformat_linearLayout;
     private LinearLayout mfontcolor_linearLayout;
@@ -42,7 +52,6 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
 
     private String selectText = "";
 
-    private static final String str_digital_clock = "数字时钟";
     private ArrayList<String> mfontcolorList = new ArrayList<>();
     private ArrayList<String> mfontsizeList = new ArrayList<>();
 
@@ -76,7 +85,8 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
         mtimeformat_text.setText(SaveUtils.getTimeFormat(DateSettingsActivity.this));
         mclockstyle_text.setText(SaveUtils.getClockStyle(DateSettingsActivity.this));
         mtimezone_text.setText(SaveUtils.getTimeZone(DateSettingsActivity.this));
-        mfestival_button.setChecked(SaveUtils.getFestivalState(DateSettingsActivity.this));//设置为真，即默认为真
+        mfestival_button.setChecked(SaveUtils.getFestivalState(DateSettingsActivity.this));
+
         mfestival_button.isChecked();//被选中
         mfestival_button.toggle();     //开关状态
         mfestival_button.toggle(true);//开关有动画
@@ -90,12 +100,12 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
     private void initData() {
         // 填充列表
         mfontcolorList.clear();
-        mfontcolorList.add("黑");
-        mfontcolorList.add("白");
-        mfontcolorList.add("红");
-        mfontcolorList.add("黄");
-        mfontcolorList.add("绿");
-        mfontcolorList.add("蓝");
+        mfontcolorList.add(str_color_black);
+        mfontcolorList.add(str_color_white);
+        mfontcolorList.add(str_color_red);
+        mfontcolorList.add(str_color_yellow);
+        mfontcolorList.add(str_color_green);
+        mfontcolorList.add(str_color_blue);
         mfontsizeList.clear();
         for (int i = 25; i <= 45; i++) {
             mfontsizeList.add(i + "sp");
@@ -199,7 +209,7 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
 
     //日期格式改变
     private void timeFormatChoice() {
-        final String items[] = {"24小时制", "12小时制"};
+        final String items[] = {str_twelvehour, str_twentyfourhour};
         AlertDialog.Builder builder = new AlertDialog.Builder(this, 0);
         builder.setTitle("时间格式选择");
         builder.setSingleChoiceItems(items, 0,
@@ -216,7 +226,7 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
 
     //时钟样式改变
     private void clockStyleChoice() {
-        final String items[] = {"数字时钟", "图形时钟"};
+        final String items[] = {str_digital_clock, str_view_clock};
         AlertDialog.Builder builder = new AlertDialog.Builder(this, 0);
         builder.setTitle("时钟样式选择");
         builder.setSingleChoiceItems(items, 0,
@@ -232,8 +242,10 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
         builder.show();
     }
 
+
+    //跳转到时区选择界面
     private void showZoneActivity() {
-        Intent mIntent = new Intent(DateSettingsActivity.this, ZonePicker.class);
+        Intent mIntent = new Intent(DateSettingsActivity.this, ZonePickerActivity.class);
         startActivityForResult(mIntent, 1);
     }
 

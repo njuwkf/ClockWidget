@@ -10,14 +10,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".Activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DateSettingsActivity"></activity>
-        <activity android:name=".ZonePicker"></activity>
+        <activity android:name=".Activity.DateSettingsActivity"></activity>
+        <activity android:name=".Activity.ZonePickerActivity"></activity>
+
         <receiver android:name="com.example.clockwidget.ClockWidget.ClockProvider" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

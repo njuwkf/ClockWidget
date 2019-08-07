@@ -26,27 +26,33 @@ import com.example.clockwidget.Utils.DateToFestivalsUtil;
 import com.example.clockwidget.Utils.SaveUtils;
 import java.util.TimeZone;
 
+import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_am;
+import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_color_black;
+import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_color_blue;
+import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_color_green;
+import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_color_red;
+import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_color_white;
+import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_color_yellow;
+import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_digital_clock;
+import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_pm;
+import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_twelvehour;
+
 
 /**
  * @auther 吴科烽
  * @date 2019-07-30
- * @describle TODO
+ * @describle WidgetService
  **/
 
 public class ClockService extends Service {
     private Handler mHandler = new Handler(Looper.getMainLooper());
-    private static final String str_twelvehour = "12小时制";
-    private static final String str_digital_clock = "数字时钟";
     private static final String TAG = "ClockService";
     private static final String TAG_LifeCycle = "ClockService_LifeCycle";
-    private static final String str_am = "上午";
-    private static final String str_pm = "下午";
-    private static final String str_color_black = "黑";
-    private static final String str_color_white = "白";
-    private static final String str_color_red = "红";
-    private static final String str_color_yellow = "黄";
-    private static final String str_color_green = "绿";
-    private static final String str_color_blue = "蓝";
+    private String str_zone = "";
+    private TimeZone mtimeZone;
+    private String str_time = "";
+    private String str_date = "";
+
     private Bitmap mbitmap = Bitmap.createBitmap(180,180, Bitmap.Config.ARGB_8888);
     private Canvas mCanvas = new Canvas(mbitmap);
     @Override
@@ -58,25 +64,22 @@ public class ClockService extends Service {
     public void onCreate() {
         Log.d(TAG_LifeCycle, "ClockService_onCreate");
         super.onCreate();
-    //    mHandler.post(mTicker);
         mHandler.postAtTime(mTicker,SystemClock.uptimeMillis()+(1000-SystemClock.uptimeMillis()%1000));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void updateView(){
         RemoteViews rViews = new RemoteViews(getPackageName(), R.layout.clockwidge_activity);
-        String str_zone = SaveUtils.getZoneId(this);
-        TimeZone tz = TimeZone.getTimeZone(str_zone);
-        Time time = new Time(tz.getID());
+        str_zone = SaveUtils.getZoneId(this);
+        mtimeZone = TimeZone.getTimeZone(str_zone);
+        Time time = new Time(mtimeZone.getID());
 
         if(str_digital_clock.equals(SaveUtils.getClockStyle(this))) {
             rViews.setViewVisibility(R.id.view_clock,View.GONE);
             rViews.setViewVisibility(R.id.date_time,View.VISIBLE);
             rViews.setViewVisibility(R.id.clock_time,View.VISIBLE);
-            String str_time="";
-            String str_date = getDateString(time) + " " + getDateInWeek(time);
-            str_date = str_date + " " + setTimeFormat(str_time,time,rViews);
-            setFestival(str_time,str_date,time,rViews);
+            str_date = getDateString(time) + " " + getDateInWeek(time)+ " " + setTimeFormat(time,rViews);
+            setFestival(time,rViews);
             setText(rViews);
         }else{
             rViews.setViewVisibility(R.id.clock_time,View.GONE);
@@ -127,7 +130,7 @@ public class ClockService extends Service {
     }
 
     //时间格式（24小时制or12小时制）
-    private String setTimeFormat(String str_time,Time time,RemoteViews rViews){
+    private String setTimeFormat(Time time,RemoteViews rViews){
         time.setToNow();
         int hour = time.hour;
         int minute = time.minute;
@@ -209,7 +212,7 @@ public class ClockService extends Service {
     }
 
     //节日提醒
-    private void setFestival(String str_time,String str_date,Time time,RemoteViews rViews){
+    private void setFestival(Time time,RemoteViews rViews){
         time.setToNow();
         int year = time.year;
         int month = time.month + 1;
