@@ -86,7 +86,7 @@ public class ClockService extends Service {
             rViews.setViewVisibility(R.id.date_time,View.GONE);
             rViews.setViewVisibility(R.id.view_clock,View.VISIBLE);
 
-            ViewClock.drawBitmap(mbitmap,mCanvas,setViewTime(time));
+            ViewClock.drawBitmap(mbitmap,mCanvas,time,SaveUtils.getFestivalState(this));
             rViews.setImageViewBitmap(R.id.view_clock,mbitmap);
         }
 
@@ -191,25 +191,6 @@ public class ClockService extends Service {
         rViews.setTextViewTextSize(R.id.clock_time, TypedValue.COMPLEX_UNIT_SP, font_size);
     }
 
-
-    //图形时钟时间（12小时制）
-    private String setViewTime(Time time){
-        String str_viewtime;
-        time.setToNow();
-        int hour = time.hour;
-        int minute = time.minute;
-        int sec = time.second;
-        if(hour<13 && hour >0){
-            //上午
-            str_viewtime = String.format("%d:%d:%d:1",hour,minute,sec);
-        }else if(hour == 0){
-            str_viewtime = String.format("12:%d:%d:0",minute,sec);
-        }else{
-            //下午
-            str_viewtime = String.format("%d:%d:%d:0",hour-12,minute,sec);
-        }
-        return str_viewtime;
-    }
 
     //节日提醒
     private void setFestival(Time time,RemoteViews rViews){
