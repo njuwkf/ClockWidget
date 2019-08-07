@@ -6,41 +6,41 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.text.format.Time;
-import android.util.Log;
 
 import com.example.clockwidget.Utils.DateToFestivalsUtil;
-import com.example.clockwidget.Utils.SaveUtils;
 
 
 /**
  * @auther 吴科烽
  * @date 2019-08-01
- * @describle TODO
+ * @describle 自定义时钟View
  **/
 
 public class ViewClock {
-    private static final String TAG = "ViewClock";
-    private static float cx,cy;           //外圆圆心
-    private static float radius;               //外圆半径
-    private static int padding = 5;
+
+    //外圆圆心
+    private static float cx,cy;
+    //外圆半径
+    private static float radius;
     private static int mHourLine;
     private static int mMinuateLine;
     private static int mSecondLine;
     private static int mHour;
     private static int mMinute;
     private static int mSecond;
+    //AM,PM判断值
     private static boolean ismorning;
+    //黑夜模式判断值
     private static boolean drak_mode;
     private static float mDegrees;
 
     private static Paint mPaint = new Paint();
+
     public static void drawBitmap(Bitmap mbitmap, Canvas mCanvas, Time time, boolean mre_festival) {
         mCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-        radius = (float) (Math.min(mbitmap.getWidth()/2, mbitmap.getHeight()/2) - padding);
-        Log.d(TAG,mbitmap.getHeight()+"");
+        radius = (float) (Math.min(mbitmap.getWidth()/2, mbitmap.getHeight()/2) - 5);
         cx = mbitmap.getWidth() / 2;
         cy = mbitmap.getHeight() / 2;
-        Log.d(TAG,radius+"");
 
         //拿到当前时间
         time.setToNow();
@@ -60,7 +60,10 @@ public class ViewClock {
         }
     }
 
-    //画圆
+    /**
+     * 绘制圆盘
+     * @param mCanvas
+     */
     private static void drawCircle(Canvas mCanvas){
         if(drak_mode){
             mPaint.setColor(Color.BLACK);
@@ -73,7 +76,10 @@ public class ViewClock {
         mCanvas.drawCircle(cx, cy, radius, mPaint);
     }
 
-    //画刻度和数字
+    /**
+     * 绘制刻度和数字
+     * @param mCanvas
+     */
     private static void drawDegree(Canvas mCanvas){
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setStrokeWidth(3);
@@ -106,7 +112,10 @@ public class ViewClock {
         }
     }
 
-    //绘制时针
+    /**
+     * 绘制时针（下面分针，秒针类似）
+     * @param mCanvas
+     */
     private static void drawHourLine(Canvas mCanvas){
         if(drak_mode){
             mPaint.setColor(Color.WHITE);
@@ -124,7 +133,6 @@ public class ViewClock {
         mCanvas.restore();
     }
 
-    //绘制分针
     private static void drawMinLine(Canvas mCanvas){
         if(drak_mode){
             mPaint.setColor(Color.WHITE);
@@ -142,7 +150,6 @@ public class ViewClock {
         mCanvas.restore();
     }
 
-    //绘制秒针
     private static void drawSecLine(Canvas mCanvas){
         mPaint.setColor(Color.RED);
         mPaint.setStrokeWidth(2);
@@ -156,13 +163,20 @@ public class ViewClock {
         mCanvas.restore();
     }
 
-    //绘制圆心
+    /**
+     * 绘制圆心
+     * @param mCanvas
+     */
     private static void drawCircleCenter(Canvas mCanvas){
         mPaint.setStyle(Paint.Style.FILL);
         mCanvas.drawCircle(cx, cy, 5, mPaint);
     }
 
-    //绘制节日提醒
+    /**
+     * 绘制节日提醒
+     * @param mCanvas
+     * @param time 当前时间
+     */
     private static void drawFestival(Canvas mCanvas,Time time) {
         if(drak_mode){
             mPaint.setColor(Color.WHITE);
@@ -174,8 +188,10 @@ public class ViewClock {
         mCanvas.drawText(DateToFestivalsUtil.DateToYearMothDay(str_fest), cx,cy - 30, mPaint);
     }
 
-
-    //绘制PM or AM
+    /**
+     * 绘制PM or AM
+     * @param mCanvas
+     */
     private static void drawAMOrPM(Canvas mCanvas) {
         if(drak_mode){
             mPaint.setColor(Color.WHITE);
@@ -190,7 +206,10 @@ public class ViewClock {
         }
     }
 
-    //上下午和黑夜模式判断
+    /**
+     * 上下午和黑夜模式判断
+     * @param time 当前时间
+     */
     private static void init(Time time){
         time.setToNow();
         int hour = time.hour;

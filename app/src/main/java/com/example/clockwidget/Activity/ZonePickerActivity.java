@@ -58,7 +58,12 @@ public class ZonePickerActivity extends Activity implements OnItemClickListener,
         listView.setOnItemClickListener(this);
     }
 
-    //通过时区的id获得当时的时间
+
+    /**
+     * 根据时区id值获取该时区当地时间
+     * @param id 时区id值
+     * @return 该时区时间
+     */
     public String getTime(String id) {
         TimeZone tz = TimeZone.getTimeZone(id);
         Time time = new Time(tz.getID());
@@ -78,7 +83,9 @@ public class ZonePickerActivity extends Activity implements OnItemClickListener,
                 "秒";
     }
 
-    //从xml文件获取信息
+    /**
+     * 从xml文件获取信息
+     */
     public void getdata() {
         try {
             map.clear();
@@ -106,7 +113,6 @@ public class ZonePickerActivity extends Activity implements OnItemClickListener,
         }
     }
 
-    //适配器类
     class myadapter extends BaseAdapter{
         Holder holder;
         @Override
@@ -143,7 +149,6 @@ public class ZonePickerActivity extends Activity implements OnItemClickListener,
     }
 
 
-    //点击后显示当前时区的时间
     @Override
     public void onItemClick(AdapterView<?> arg0, View view, int arg2, long arg3) {
         TextView textView = view.findViewById(R.id.item_zone);
@@ -152,7 +157,7 @@ public class ZonePickerActivity extends Activity implements OnItemClickListener,
         Intent mIntent = new Intent();
         mIntent.putExtra("timezone",textView.getText().toString());
         setResult(2,mIntent);
-        Toast.makeText(ZonePickerActivity.this, getTime(map.get(textView.getText().toString())), Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     @Override
@@ -163,8 +168,6 @@ public class ZonePickerActivity extends Activity implements OnItemClickListener,
     public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
     }
 
-
-    //当输入框改变时，重新获取数据并通知列表更新
     @Override
     public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
         getdata();

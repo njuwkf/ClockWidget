@@ -23,7 +23,11 @@ import com.example.clockwidget.R;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * @auther 吴科烽
+ * @date 2019-08-01
+ * @describle 自定义滑动选择器View
+ **/
 public class WheelView extends ScrollView {
     public static final String TAG = WheelView.class.getSimpleName();
 
@@ -73,7 +77,8 @@ public class WheelView extends ScrollView {
     }
 
     public static final int OFF_SET_DEFAULT = 1;
-    int offset = OFF_SET_DEFAULT; // 偏移量（需要在最前面和最后面补全）
+    // 偏移量（需要在最前面和最后面补全）
+    int offset = OFF_SET_DEFAULT;
 
     public int getOffset() {
         return offset;
@@ -82,8 +87,8 @@ public class WheelView extends ScrollView {
     public void setOffset(int offset) {
         this.offset = offset;
     }
-
-    int displayItemCount; // 每页显示的数量
+    // 每页显示的数量
+    int displayItemCount;
 
     int selectedIndex = 1;
 
@@ -101,7 +106,7 @@ public class WheelView extends ScrollView {
 
             public void run() {
                 int newY = getScrollY();
-                if (initialY - newY == 0) { // stopped
+                if (initialY - newY == 0) {
                     final int remainder = initialY % itemHeight;
                     final int divided = initialY / itemHeight;
                     if (remainder == 0) {
@@ -250,7 +255,6 @@ public class WheelView extends ScrollView {
     public void setBackgroundDrawable(Drawable background) {
 
         if (viewWidth == 0) {
-//            viewWidth = ((Activity) context).getWindowManager().getDefaultDisplay().getWidth();
             viewWidth = views.getWidth();
             Log.d(TAG, "viewWidth: " + viewWidth);
         }

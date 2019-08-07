@@ -64,8 +64,9 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
         initListeners();
     }
 
-
-    //初始化组件
+    /**
+     * 初始化组件
+     */
     private void initView() {
         mtimeformat_linearLayout = findViewById(R.id.ll_timeformat);
         mfontcolor_linearLayout = findViewById(R.id.ll_fontcolor);
@@ -86,17 +87,17 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
         mclockstyle_text.setText(SaveUtils.getClockStyle(DateSettingsActivity.this));
         mtimezone_text.setText(SaveUtils.getTimeZone(DateSettingsActivity.this));
         mfestival_button.setChecked(SaveUtils.getFestivalState(DateSettingsActivity.this));
-
-        mfestival_button.isChecked();//被选中
-        mfestival_button.toggle();     //开关状态
-        mfestival_button.toggle(true);//开关有动画
-        mfestival_button.setShadowEffect(false);//禁用阴影效果
-        mfestival_button.setEnabled(true);//false为禁用按钮
-        mfestival_button.setEnableEffect(true);//false为禁用开关动画
+        mfestival_button.isChecked();
+        mfestival_button.toggle();
+        mfestival_button.toggle(true);
+        mfestival_button.setShadowEffect(false);
+        mfestival_button.setEnabled(true);
+        mfestival_button.setEnableEffect(true);
     }
 
-
-    //初始化列表数据
+    /**
+     * 初始化列表数据
+     */
     private void initData() {
         // 填充列表
         mfontcolorList.clear();
@@ -112,7 +113,9 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
         }
     }
 
-    //初始化监听器
+    /**
+     * 初始化监听器
+     */
     private void initListeners() {
         mclockstyle_linearLayout.setOnClickListener(this);
         mtimezone_linearLayout.setOnClickListener(this);
@@ -158,7 +161,9 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
     }
 
 
-    //选择器接口
+    /**
+     * 滚动选择器接口
+     */
     private void showDialog(TextView textView, ArrayList<String> list, int selected) {
         showChoiceDialog(list, textView, selected,
                 new WheelView.OnWheelViewListener() {
@@ -170,18 +175,21 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
     }
 
 
-    //选择器功能
+    /**
+     * 滚动选择器自定义功能
+     */
     private void showChoiceDialog(ArrayList<String> dataList, final TextView textView, int selected,
                                   WheelView.OnWheelViewListener listener) {
         selectText = "";
         View outerView = LayoutInflater.from(this).inflate(R.layout.wheelview_dialog, null);
         final WheelView wheelView = outerView.findViewById(R.id.wheel_view);
-        wheelView.setOffset(2);// 对话框中当前项上面和下面的项数
-        wheelView.setItems(dataList);// 设置数据源
-        wheelView.setSeletion(selected);// 默认选中
+        // 对话框中当前项上面和下面的项数
+        wheelView.setOffset(2);
+        // 设置数据源
+        wheelView.setItems(dataList);
+        // 默认选中项
+        wheelView.setSeletion(selected);
         wheelView.setOnWheelViewListener(listener);
-
-        // 显示对话框，点击确认后将所选项的值显示
         AlertDialog alertDialog = new AlertDialog.Builder(this)
                 .setView(outerView)
                 .setPositiveButton("确认",
@@ -206,8 +214,9 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
         alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(green);
     }
 
-
-    //日期格式改变
+    /**
+     * 日期格式改变
+     */
     private void timeFormatChoice() {
         final String items[] = {str_twelvehour, str_twentyfourhour};
         AlertDialog.Builder builder = new AlertDialog.Builder(this, 0);
@@ -224,7 +233,9 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
         builder.show();
     }
 
-    //时钟样式改变
+    /**
+     * 时钟样式改变
+     */
     private void clockStyleChoice() {
         final String items[] = {str_digital_clock, str_view_clock};
         AlertDialog.Builder builder = new AlertDialog.Builder(this, 0);
@@ -243,7 +254,9 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
     }
 
 
-    //跳转到时区选择界面
+    /**
+     * 跳转到时区选择界面
+     */
     private void showZoneActivity() {
         Intent mIntent = new Intent(DateSettingsActivity.this, ZonePickerActivity.class);
         startActivityForResult(mIntent, 1);

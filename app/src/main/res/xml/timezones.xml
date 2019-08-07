@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <timezone id="Asia/Shanghai" name="北京/中国"></timezone>
-    <timezone id="Asia/Hong_Kong" name="香港/中国"></timezone>
-    <timezone id="Asia/Taipei" name="台北时间 (台北)"></timezone>
     <timezone id="Asia/Seoul" name="首尔"></timezone>
     <timezone id="Asia/Tokyo" name="东京/日本"></timezone>
     <timezone id="America/Denver" name="丹佛/美国山区"></timezone>

@@ -41,7 +41,7 @@ import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_twelveho
 /**
  * @auther 吴科烽
  * @date 2019-07-30
- * @describle WidgetService
+ * @describle 维持时钟运行的Service
  **/
 
 public class ClockService extends Service {
@@ -67,6 +67,10 @@ public class ClockService extends Service {
         mHandler.postAtTime(mTicker,SystemClock.uptimeMillis()+(1000-SystemClock.uptimeMillis()%1000));
     }
 
+
+    /**
+     * 更新界面
+     */
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void updateView(){
         RemoteViews rViews = new RemoteViews(getPackageName(), R.layout.clockwidge_activity);
@@ -105,8 +109,8 @@ public class ClockService extends Service {
 
     /**
      * 获得周几(基姆拉尔森公式)
-     * @param
-     * @return
+     * @param time 当地时间
+     * @return 周几
      */
     private String getDateInWeek(Time time) {
         time.setToNow();
@@ -117,10 +121,11 @@ public class ClockService extends Service {
         int weekday = (1+day+2*month+3*(month+1)/5+year+year/4-year/100+year/400)%7;
         return mweekdays[weekday];
     }
+
     /**
      * 获得mm月dd日类型的日期
-     * @param
-     * @return
+     * @param time 当地时间
+     * @return mm月dd日类型的日期
      */
     private String getDateString(Time time){
         time.setToNow();
@@ -129,7 +134,12 @@ public class ClockService extends Service {
         return  month + "月" + day + "日" ;
     }
 
-    //时间格式（24小时制or12小时制）
+    /**
+     * 时间格式设置（24小时制or12小时制）
+     * @param time 当地时间
+     * @param rViews clockwidge_activity的View
+     * @return AM or PM
+     */
     private String setTimeFormat(Time time,RemoteViews rViews){
         time.setToNow();
         int hour = time.hour;
@@ -156,8 +166,10 @@ public class ClockService extends Service {
         return str_format;
     }
 
-
-    //时钟字体颜色大小设置（从sharepreferences中读取数据）
+    /**
+     * 时钟字体颜色、大小设置（从sharepreferences中读取数据）
+     * @param rViews clockwidge_activity的View
+     */
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void setText(RemoteViews rViews){
         Log.d(TAG,"ClockService_fontcolor:"+SaveUtils.getFontColor(this));
@@ -191,8 +203,11 @@ public class ClockService extends Service {
         rViews.setTextViewTextSize(R.id.clock_time, TypedValue.COMPLEX_UNIT_SP, font_size);
     }
 
-
-    //节日提醒
+    /**
+     * 节日提醒设置
+     * @param time 当地时间
+     * @param rViews clockwidge_activity的View
+     */
     private void setFestival(Time time,RemoteViews rViews){
         time.setToNow();
         int year = time.year;

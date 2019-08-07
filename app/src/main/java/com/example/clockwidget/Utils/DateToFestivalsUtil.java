@@ -9,15 +9,17 @@ import java.util.Locale;
 /**
  * @auther 吴科烽
  * @date 2019-08-06
- * @describle TODO
+ * @describle 节假日计算
  **/
 public class DateToFestivalsUtil {
-
-    private int year; // 农历的年份
+    // 农历的年份
+    private int year;
     private int month;
     private int day;
-    private String lunarMonth; // 农历的月份
-    public int leapMonth = 0; // 闰的是哪个月
+    // 农历的月份
+    private String lunarMonth;
+    // 闰月
+    public int leapMonth = 0;
     final static String chineseNumber[] = {"一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"};
     static SimpleDateFormat chineseDateFormat = new SimpleDateFormat("yyyy年MM月dd日", Locale.CHINA);
     final static long[] lunarInfo = new long[]{
@@ -126,15 +128,13 @@ public class DateToFestivalsUtil {
             try{
                 baseDate=chineseDateFormat.parse("1900年1月31日");
             }catch(ParseException e){
-                e.printStackTrace(); // To change body of catch statement use
-                // Options | File Templates.
+                e.printStackTrace();
             }
             nowadays=year_log+"年"+month_log+"月"+day_log+"日";
             try{
                 nowaday=chineseDateFormat.parse(nowadays);
             }catch(ParseException e){
-                e.printStackTrace(); // To change body of catch statement use
-                // Options | File Templates.
+                e.printStackTrace();
             }
             // 求出和1900年1月31日相差的天数
             int offset=(int)((nowaday.getTime()-baseDate.getTime())/86400000L);
