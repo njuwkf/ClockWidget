@@ -1,4 +1,4 @@
-package com.example.clockwidget.ClockWidget;
+package com.example.clockwidget.widget;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -8,13 +8,12 @@ import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 import android.widget.RemoteViews;
-import com.example.clockwidget.Activity.DateSettingsActivity;
+import com.example.clockwidget.activity.DateSettingsActivity;
 import com.example.clockwidget.R;
 
 /**
- * @auther 吴科烽
+ * @author 吴科烽
  * @date 2019-07-30
- * @describle WidgetProvider
  **/
 
 public class ClockProvider extends AppWidgetProvider {

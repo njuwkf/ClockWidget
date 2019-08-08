@@ -1,4 +1,4 @@
-package com.example.clockwidget.Activity;
+package com.example.clockwidget.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -12,49 +12,48 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.clockwidget.R;
-import com.example.clockwidget.Utils.SaveUtils;
-import com.example.clockwidget.DrawView.WheelView;
+import com.example.clockwidget.utils.SaveUtils;
+import com.example.clockwidget.drawview.WheelView;
 import com.suke.widget.SwitchButton;
 
 import java.util.ArrayList;
 
-import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_color_black;
-import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_color_blue;
-import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_color_green;
-import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_color_red;
-import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_color_white;
-import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_color_yellow;
-import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_digital_clock;
-import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_twelvehour;
-import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_twentyfourhour;
-import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_view_clock;
+import static com.example.clockwidget.constutils.SettingsConstUtils.str_color_black;
+import static com.example.clockwidget.constutils.SettingsConstUtils.str_color_blue;
+import static com.example.clockwidget.constutils.SettingsConstUtils.str_color_green;
+import static com.example.clockwidget.constutils.SettingsConstUtils.str_color_red;
+import static com.example.clockwidget.constutils.SettingsConstUtils.str_color_white;
+import static com.example.clockwidget.constutils.SettingsConstUtils.str_color_yellow;
+import static com.example.clockwidget.constutils.SettingsConstUtils.str_digital_clock;
+import static com.example.clockwidget.constutils.SettingsConstUtils.str_twelvehour;
+import static com.example.clockwidget.constutils.SettingsConstUtils.str_twentyfourhour;
+import static com.example.clockwidget.constutils.SettingsConstUtils.str_view_clock;
 
 /**
- * @auther 吴科烽
+ * @author 吴科烽
  * @date 2019-07-31
- * @describle 设置界面
  **/
 
 public class DateSettingsActivity extends Activity implements View.OnClickListener {
 
-    private LinearLayout mtimeformat_linearLayout;
-    private LinearLayout mfontcolor_linearLayout;
-    private LinearLayout mfontsize_linearLayout;
-    private LinearLayout mclockstyle_linearLayout;
-    private LinearLayout mtimezone_linearLayout;
+    private LinearLayout timeFormatLinearLayout;
+    private LinearLayout fontColorLinearLayout;
+    private LinearLayout fontSizeLinearLayout;
+    private LinearLayout clockStyleLinearLayout;
+    private LinearLayout timeZoneLinearLayout;
 
-    private TextView mtimeformat_text;
-    private TextView mfontcolor_text;
-    private TextView mfontsize_text;
-    private TextView mclockstyle_text;
-    private TextView mtimezone_text;
-    private SwitchButton mfestival_button;
+    private TextView timeFormatText;
+    private TextView fontColorText;
+    private TextView fontSizeText;
+    private TextView clockStyleText;
+    private TextView timeZoneText;
+    private SwitchButton festivalReminderButton;
 
     private String selectText = "";
 
-    private ArrayList<String> mfontcolorList = new ArrayList<>();
-    private ArrayList<String> mfontsizeList = new ArrayList<>();
-
+    private ArrayList<String> fontColorList = new ArrayList<>();
+    private ArrayList<String> fontSizeList = new ArrayList<>();
+    private final static int RESULTCODE = 2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,31 +67,31 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
      * 初始化组件
      */
     private void initView() {
-        mtimeformat_linearLayout = findViewById(R.id.ll_timeformat);
-        mfontcolor_linearLayout = findViewById(R.id.ll_fontcolor);
-        mfontsize_linearLayout = findViewById(R.id.ll_fontsize);
-        mclockstyle_linearLayout = findViewById(R.id.ll_clockstyle);
-        mtimezone_linearLayout = findViewById(R.id.ll_timezones);
+        timeFormatLinearLayout = findViewById(R.id.ll_timeformat);
+        fontColorLinearLayout = findViewById(R.id.ll_fontcolor);
+        fontSizeLinearLayout = findViewById(R.id.ll_fontsize);
+        clockStyleLinearLayout = findViewById(R.id.ll_clockstyle);
+        timeZoneLinearLayout = findViewById(R.id.ll_timezones);
 
-        mtimeformat_text = findViewById(R.id.tv_selected_timeformat);
-        mfontcolor_text = findViewById(R.id.tv_selected_color);
-        mfontsize_text = findViewById(R.id.tv_selected_size);
-        mclockstyle_text = findViewById(R.id.tv_selected_clockstyle);
-        mtimezone_text = findViewById(R.id.tv_selected_timezone);
-        mfestival_button = findViewById(R.id.festival_button);
+        timeFormatText = findViewById(R.id.tv_selected_timeformat);
+        fontColorText = findViewById(R.id.tv_selected_color);
+        fontSizeText = findViewById(R.id.tv_selected_size);
+        clockStyleText = findViewById(R.id.tv_selected_clockstyle);
+        timeZoneText = findViewById(R.id.tv_selected_timezone);
+        festivalReminderButton = findViewById(R.id.festival_button);
 
-        mfontcolor_text.setText(SaveUtils.getFontColor(DateSettingsActivity.this));
-        mfontsize_text.setText(SaveUtils.getFontSize(DateSettingsActivity.this));
-        mtimeformat_text.setText(SaveUtils.getTimeFormat(DateSettingsActivity.this));
-        mclockstyle_text.setText(SaveUtils.getClockStyle(DateSettingsActivity.this));
-        mtimezone_text.setText(SaveUtils.getTimeZone(DateSettingsActivity.this));
-        mfestival_button.setChecked(SaveUtils.getFestivalState(DateSettingsActivity.this));
-        mfestival_button.isChecked();
-        mfestival_button.toggle();
-        mfestival_button.toggle(true);
-        mfestival_button.setShadowEffect(false);
-        mfestival_button.setEnabled(true);
-        mfestival_button.setEnableEffect(true);
+        fontColorText.setText(SaveUtils.getFontColor(DateSettingsActivity.this));
+        fontSizeText.setText(SaveUtils.getFontSize(DateSettingsActivity.this));
+        timeFormatText.setText(SaveUtils.getTimeFormat(DateSettingsActivity.this));
+        clockStyleText.setText(SaveUtils.getClockStyle(DateSettingsActivity.this));
+        timeZoneText.setText(SaveUtils.getTimeZone(DateSettingsActivity.this));
+        festivalReminderButton.setChecked(SaveUtils.getFestivalState(DateSettingsActivity.this));
+        festivalReminderButton.isChecked();
+        festivalReminderButton.toggle();
+        festivalReminderButton.toggle(true);
+        festivalReminderButton.setShadowEffect(false);
+        festivalReminderButton.setEnabled(true);
+        festivalReminderButton.setEnableEffect(true);
     }
 
     /**
@@ -100,16 +99,16 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
      */
     private void initData() {
         // 填充列表
-        mfontcolorList.clear();
-        mfontcolorList.add(str_color_black);
-        mfontcolorList.add(str_color_white);
-        mfontcolorList.add(str_color_red);
-        mfontcolorList.add(str_color_yellow);
-        mfontcolorList.add(str_color_green);
-        mfontcolorList.add(str_color_blue);
-        mfontsizeList.clear();
+        fontColorList.clear();
+        fontColorList.add(str_color_black);
+        fontColorList.add(str_color_white);
+        fontColorList.add(str_color_red);
+        fontColorList.add(str_color_yellow);
+        fontColorList.add(str_color_green);
+        fontColorList.add(str_color_blue);
+        fontColorList.clear();
         for (int i = 25; i <= 45; i++) {
-            mfontsizeList.add(i + "sp");
+            fontSizeList.add(i + "sp");
         }
     }
 
@@ -117,9 +116,9 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
      * 初始化监听器
      */
     private void initListeners() {
-        mclockstyle_linearLayout.setOnClickListener(this);
-        mtimezone_linearLayout.setOnClickListener(this);
-        mfestival_button.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
+        clockStyleLinearLayout.setOnClickListener(this);
+        timeZoneLinearLayout.setOnClickListener(this);
+        festivalReminderButton.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(SwitchButton view, boolean isChecked) {
                 SaveUtils.saveFestivalState(DateSettingsActivity.this,isChecked);
@@ -131,9 +130,9 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
             }
         });
         if (str_digital_clock.equals(SaveUtils.getClockStyle(this))) {
-            mtimeformat_linearLayout.setOnClickListener(this);
-            mfontcolor_linearLayout.setOnClickListener(this);
-            mfontsize_linearLayout.setOnClickListener(this);
+            timeFormatLinearLayout.setOnClickListener(this);
+            fontColorLinearLayout.setOnClickListener(this);
+            fontSizeLinearLayout.setOnClickListener(this);
         }
     }
 
@@ -144,10 +143,10 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
                 timeFormatChoice();
                 break;
             case R.id.ll_fontcolor:
-                showDialog(mfontcolor_text, mfontcolorList, 3);
+                showDialog(fontColorText, fontColorList, 3);
                 break;
             case R.id.ll_fontsize:
-                showDialog(mfontsize_text, mfontsizeList, 3);
+                showDialog(fontSizeText, fontSizeList, 3);
                 break;
             case R.id.ll_clockstyle:
                 clockStyleChoice();
@@ -218,7 +217,7 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
      * 日期格式改变
      */
     private void timeFormatChoice() {
-        final String items[] = {str_twelvehour, str_twentyfourhour};
+        final String []items = {str_twelvehour, str_twentyfourhour};
         AlertDialog.Builder builder = new AlertDialog.Builder(this, 0);
         builder.setTitle("时间格式选择");
         builder.setSingleChoiceItems(items, 0,
@@ -226,7 +225,7 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         SaveUtils.saveTimeFormat(DateSettingsActivity.this, items[which]);
-                        mtimeformat_text.setText(items[which]);
+                        fontSizeText.setText(items[which]);
                         dialog.dismiss();
                     }
                 });
@@ -237,7 +236,7 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
      * 时钟样式改变
      */
     private void clockStyleChoice() {
-        final String items[] = {str_digital_clock, str_view_clock};
+        final String []items = {str_digital_clock, str_view_clock};
         AlertDialog.Builder builder = new AlertDialog.Builder(this, 0);
         builder.setTitle("时钟样式选择");
         builder.setSingleChoiceItems(items, 0,
@@ -245,7 +244,7 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         SaveUtils.saveClockStyle(DateSettingsActivity.this, items[which]);
-                        mclockstyle_text.setText(items[which]);
+                        clockStyleText.setText(items[which]);
                         dialog.dismiss();
                     }
                 });
@@ -264,10 +263,10 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == 2) {
+        if (resultCode == RESULTCODE) {
             if (requestCode == 1) {
                 String zone = data.getStringExtra("timezone");
-                mtimezone_text.setText(zone);
+                timeZoneText.setText(zone);
             }
         }
     }

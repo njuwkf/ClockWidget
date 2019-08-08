@@ -1,4 +1,4 @@
-package com.example.clockwidget.ClockWidget;
+package com.example.clockwidget.widget;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -24,38 +24,39 @@ import android.widget.RemoteViews;
 
 import androidx.annotation.RequiresApi;
 
-import com.example.clockwidget.DrawView.ViewClock;
+import com.example.clockwidget.constutils.SettingsConstUtils;
+import com.example.clockwidget.drawview.ViewClock;
 import com.example.clockwidget.R;
-import com.example.clockwidget.Utils.DateToFestivalsUtil;
-import com.example.clockwidget.Utils.SaveUtils;
+import com.example.clockwidget.utils.DateToFestivalsUtil;
+import com.example.clockwidget.utils.SaveUtils;
 import java.util.TimeZone;
 
-import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_am;
-import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_color_black;
-import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_color_blue;
-import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_color_green;
-import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_color_red;
-import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_color_white;
-import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_color_yellow;
-import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_digital_clock;
-import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_pm;
-import static com.example.clockwidget.ConstUtils.SettingsConstUtils.str_twelvehour;
+import static com.example.clockwidget.constutils.SettingsConstUtils.FontColor.BLACK;
+import static com.example.clockwidget.constutils.SettingsConstUtils.str_am;
+import static com.example.clockwidget.constutils.SettingsConstUtils.str_color_black;
+import static com.example.clockwidget.constutils.SettingsConstUtils.str_color_blue;
+import static com.example.clockwidget.constutils.SettingsConstUtils.str_color_green;
+import static com.example.clockwidget.constutils.SettingsConstUtils.str_color_red;
+import static com.example.clockwidget.constutils.SettingsConstUtils.str_color_white;
+import static com.example.clockwidget.constutils.SettingsConstUtils.str_color_yellow;
+import static com.example.clockwidget.constutils.SettingsConstUtils.str_digital_clock;
+import static com.example.clockwidget.constutils.SettingsConstUtils.str_pm;
+import static com.example.clockwidget.constutils.SettingsConstUtils.str_twelvehour;
 
 
 /**
- * @auther 吴科烽
+ * @author 吴科烽
  * @date 2019-07-30
- * @describle 维持时钟运行的Service
  **/
 
 public class ClockService extends Service {
     private Handler mHandler = new Handler(Looper.getMainLooper());
     private static final String TAG = "ClockService";
-    private static final String TAG_LifeCycle = "ClockService_LifeCycle";
-    private String str_zone = "";
-    private TimeZone mtimeZone;
-    private String str_time = "";
-    private String str_date = "";
+    private static final String TAG_LIFE_CYCLE = "ClockService_LifeCycle";
+    private String strZoneId = "";
+    private TimeZone timeZone;
+    private String strTime = "";
+    private String strDate = "";
     private static final String CHANNEL_IN_STRING = "service_01";
     private Bitmap mbitmap = Bitmap.createBitmap(180,180, Bitmap.Config.ARGB_8888);
     private Canvas mCanvas = new Canvas(mbitmap);
@@ -70,7 +71,7 @@ public class ClockService extends Service {
      */
     @Override
     public void onCreate() {
-        Log.d(TAG_LifeCycle, "ClockService_onCreate");
+        Log.d(TAG_LIFE_CYCLE, "ClockService_onCreate");
         super.onCreate();
         setService();
         mHandler.postAtTime(mTicker,SystemClock.uptimeMillis()+(1000-SystemClock.uptimeMillis()%1000));
@@ -83,15 +84,15 @@ public class ClockService extends Service {
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void updateView(){
         RemoteViews rViews = new RemoteViews(getPackageName(), R.layout.clockwidge_activity);
-        str_zone = SaveUtils.getZoneId(this);
-        mtimeZone = TimeZone.getTimeZone(str_zone);
-        Time time = new Time(mtimeZone.getID());
+        strZoneId = SaveUtils.getZoneId(this);
+        timeZone = TimeZone.getTimeZone(strZoneId);
+        Time time = new Time(timeZone.getID());
 
         if(str_digital_clock.equals(SaveUtils.getClockStyle(this))) {
             rViews.setViewVisibility(R.id.view_clock,View.GONE);
             rViews.setViewVisibility(R.id.date_time,View.VISIBLE);
             rViews.setViewVisibility(R.id.clock_time,View.VISIBLE);
-            str_date = getDateString(time) + " " + getDateInWeek(time)+ " " + setTimeFormat(time,rViews);
+            strDate = getDateString(time) + " " + getDateInWeek(time)+ " " + setTimeFormat(time,rViews);
             setFestival(time,rViews);
             setText(rViews);
         }else{
@@ -111,7 +112,7 @@ public class ClockService extends Service {
 
     @Override
     public void onDestroy() {
-        Log.d(TAG_LifeCycle,"ClockService_onDestroy");
+        Log.d(TAG_LIFE_CYCLE,"ClockService_onDestroy");
         super.onDestroy();
         mHandler.removeCallbacks(mTicker);
     }
@@ -154,25 +155,25 @@ public class ClockService extends Service {
         int hour = time.hour;
         int minute = time.minute;
         int sec = time.second;
-        String str_format = "";
+        String strFormat = "";
         if(str_twelvehour.equals(SaveUtils.getTimeFormat(this))){
             if(hour<13 && hour >0){
                 //上午
-                str_format = str_am;
-                str_time = String.format("%02d:%02d:%02d",hour,minute,sec);
+                strFormat = str_am;
+                strTime = String.format("%02d:%02d:%02d",hour,minute,sec);
             }else if(hour == 0){
-                str_format = str_pm;
-                str_time = String.format("12:%02d:%02d",minute,sec);
+                strFormat = str_pm;
+                strTime = String.format("12:%02d:%02d",minute,sec);
             }else{
                 //下午
-                str_format = str_pm;
-                str_time = String.format("%02d:%02d:%02d",hour-12,minute,sec);
+                strFormat = str_pm;
+                strTime = String.format("%02d:%02d:%02d",hour-12,minute,sec);
             }
         }else{
-            str_time = String.format("%02d:%02d:%02d",hour,minute,sec);
+            strTime = String.format("%02d:%02d:%02d",hour,minute,sec);
         }
-        rViews.setTextViewText(R.id.clock_time,str_time);
-        return str_format;
+        rViews.setTextViewText(R.id.clock_time,strTime);
+        return strFormat;
     }
 
     /**
@@ -183,7 +184,7 @@ public class ClockService extends Service {
     private void setText(RemoteViews rViews){
         Log.d(TAG,"ClockService_fontcolor:"+SaveUtils.getFontColor(this));
         switch (SaveUtils.getFontColor(this)) {
-            case str_color_black:
+            case BLACK:
                 rViews.setTextColor(R.id.clock_time, Color.BLACK);
                 break;
             case str_color_white:
@@ -206,10 +207,10 @@ public class ClockService extends Service {
         }
 
         //时钟字体大小变化（从sharepreferences中读取数据）
-        Log.d(TAG,"ClockService_fontsize"+SaveUtils.getFontSize(this));
-        String str_fontsize = SaveUtils.getFontSize(this).substring(0, 2);
-        int font_size = Integer.parseInt(str_fontsize);
-        rViews.setTextViewTextSize(R.id.clock_time, TypedValue.COMPLEX_UNIT_SP, font_size);
+        Log.d(TAG,"fontSize:"+SaveUtils.getFontSize(this));
+        String strFontSize = SaveUtils.getFontSize(this).substring(0, 2);
+        int fontSize = Integer.parseInt(strFontSize);
+        rViews.setTextViewTextSize(R.id.clock_time, TypedValue.COMPLEX_UNIT_SP, fontSize);
     }
 
     /**
@@ -222,13 +223,11 @@ public class ClockService extends Service {
         int year = time.year;
         int month = time.month + 1;
         int day = time.monthDay;
-        String str_fest = year + "-" + month + "-" +day;
+        String strFestDate = year + "-" + month + "-" +day;
         if(SaveUtils.getFestivalState(this)){
-            str_date = str_date + " " +DateToFestivalsUtil.DateToYearMothDay(str_fest);
-        }else{
-            str_date = str_date;
+            strDate = strDate + " " +DateToFestivalsUtil.dateToYearMothDay(strFestDate);
         }
-        rViews.setTextViewText(R.id.date_time,str_date);
+        rViews.setTextViewText(R.id.date_time,strDate);
     }
 
     private final Runnable mTicker = new Runnable() {

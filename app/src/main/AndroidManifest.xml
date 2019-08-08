@@ -10,16 +10,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.MainActivity">
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.DateSettingsActivity"></activity>
-        <activity android:name=".Activity.ZonePickerActivity"></activity>
+        <activity android:name=".activity.DateSettingsActivity"></activity>
+        <activity android:name=".activity.ZonePickerActivity"></activity>
 
-        <receiver android:name="com.example.clockwidget.ClockWidget.ClockProvider" >
+        <receiver android:name="com.example.clockwidget.widget.ClockProvider" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -30,7 +30,7 @@
 
         </receiver>
 
-        <service android:name=".ClockWidget.ClockService"></service>
+        <service android:name=".widget.ClockService"></service>
 
     </application>
     <uses-permission android:name="android.permission.SET_TIME_ZONE"
