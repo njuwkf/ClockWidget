@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 import android.widget.RemoteViews;
 import com.example.clockwidget.Activity.DateSettingsActivity;
@@ -38,7 +39,13 @@ public class ClockProvider extends AppWidgetProvider {
         super.onEnabled(context);
         // 启动Service
         Log.d(TAG,"ClockProvider_onEnabled");
-        context.startService(new Intent(context, ClockService.class));
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            Log.d(TAG,"ClockProvider_onEnabled Android 8");
+            context.startForegroundService(new Intent(context,ClockService.class));
+        }else{
+            Log.d(TAG,"ClockProvider_onEnabled Android 7");
+            context.startService(new Intent(context, ClockService.class));
+        }
     }
 
     @Override

@@ -14,7 +14,7 @@ import static com.example.clockwidget.ConstUtils.DefaultSettingsConstUtils.str_d
 /**
  * @auther 吴科烽
  * @date 2019-07-31
- * @describle TODO
+ * @describle 保存信息
  **/
 
 public class SaveUtils {

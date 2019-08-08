@@ -1,8 +1,12 @@
 package com.example.clockwidget.ClockWidget;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -52,7 +56,7 @@ public class ClockService extends Service {
     private TimeZone mtimeZone;
     private String str_time = "";
     private String str_date = "";
-
+    private static final String CHANNEL_IN_STRING = "service_01";
     private Bitmap mbitmap = Bitmap.createBitmap(180,180, Bitmap.Config.ARGB_8888);
     private Canvas mCanvas = new Canvas(mbitmap);
     @Override
@@ -60,10 +64,15 @@ public class ClockService extends Service {
         return null;
     }
 
+
+    /**
+     *
+     */
     @Override
     public void onCreate() {
         Log.d(TAG_LifeCycle, "ClockService_onCreate");
         super.onCreate();
+        setService();
         mHandler.postAtTime(mTicker,SystemClock.uptimeMillis()+(1000-SystemClock.uptimeMillis()%1000));
     }
 
@@ -234,5 +243,14 @@ public class ClockService extends Service {
         }
     };
 
-
+    private void setService(){
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationChannel mChannel = null;
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            mChannel = new NotificationChannel(CHANNEL_IN_STRING,getString(R.string.app_name),NotificationManager.IMPORTANCE_DEFAULT);
+            mNotificationManager.createNotificationChannel(mChannel);
+            Notification mNotification = new Notification.Builder(getApplicationContext(),CHANNEL_IN_STRING).build();
+            startForeground(1,mNotification);
+        }
+    }
 }

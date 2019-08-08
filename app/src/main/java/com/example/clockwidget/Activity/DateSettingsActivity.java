@@ -244,7 +244,6 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //todo:change clock style
                         SaveUtils.saveClockStyle(DateSettingsActivity.this, items[which]);
                         mclockstyle_text.setText(items[which]);
                         dialog.dismiss();
