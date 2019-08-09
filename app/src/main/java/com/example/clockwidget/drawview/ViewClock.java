@@ -232,4 +232,5 @@ public class ViewClock {
             drak_mode = false;
         }
     }
+
 }

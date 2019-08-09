@@ -9,47 +9,21 @@ public final class SettingsConstUtils {
     private SettingsConstUtils(){
     }
 
-    public static final String str_twelvehour = "12小时制";
-    public static final String str_twentyfourhour = "24小时制";
+    public static final String STR_COLOR_BLACK = "黑";
+    public static final String STR_COLOR_WHITE = "白";
+    public static final String STR_COLOR_RED = "红";
+    public static final String STR_COLOR_YELLOW = "黄";
+    public static final String STR_COLOR_GREEN = "绿";
+    public static final String STR_COLOR_BLUE = "蓝";
 
-    public static final String str_digital_clock = "数字时钟";
-    public static final String str_view_clock = "图形时钟";
+    public static final String STR_TWELVE_HOUR = "12小时制";
+    public static final String STR_TWENTY_FOUR_HOUR = "24小时制";
 
-    public static final String str_am = "上午";
-    public static final String str_pm = "下午";
+    public static final String STR_DIGITAL_CLOCK = "数字时钟";
+    public static final String STR_VIEW_CLOCK = "图形时钟";
 
-    public enum FontColor{
-        /**
-         * 黑色
-         */
-        BLACK("黑"),
-        /**
-         * 白色
-         */
-        WHITE("白"),
-        /**
-         * 红色
-         */
-        RED("红"),
-        /**
-         * 黄色
-         */
-        YELLOW("黄"),
-        /**
-         * 绿色
-         */
-        GREEN("绿"),
-        /**
-         * 蓝色
-         */
-        BLUE("蓝");
-        private String action;
-        FontColor(String action) {
-            this.action = action;
-        }
+    public static final String STR_AM = "上午";
+    public static final String STR_PM = "下午";
 
-        public String getAction() {
-            return action;
-        }
-    }
+
 }

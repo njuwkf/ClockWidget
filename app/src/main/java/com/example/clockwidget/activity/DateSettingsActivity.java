@@ -18,16 +18,16 @@ import com.suke.widget.SwitchButton;
 
 import java.util.ArrayList;
 
-import static com.example.clockwidget.constutils.SettingsConstUtils.str_color_black;
-import static com.example.clockwidget.constutils.SettingsConstUtils.str_color_blue;
-import static com.example.clockwidget.constutils.SettingsConstUtils.str_color_green;
-import static com.example.clockwidget.constutils.SettingsConstUtils.str_color_red;
-import static com.example.clockwidget.constutils.SettingsConstUtils.str_color_white;
-import static com.example.clockwidget.constutils.SettingsConstUtils.str_color_yellow;
-import static com.example.clockwidget.constutils.SettingsConstUtils.str_digital_clock;
-import static com.example.clockwidget.constutils.SettingsConstUtils.str_twelvehour;
-import static com.example.clockwidget.constutils.SettingsConstUtils.str_twentyfourhour;
-import static com.example.clockwidget.constutils.SettingsConstUtils.str_view_clock;
+import static com.example.clockwidget.constutils.SettingsConstUtils.STR_COLOR_BLACK;
+import static com.example.clockwidget.constutils.SettingsConstUtils.STR_COLOR_BLUE;
+import static com.example.clockwidget.constutils.SettingsConstUtils.STR_COLOR_GREEN;
+import static com.example.clockwidget.constutils.SettingsConstUtils.STR_COLOR_RED;
+import static com.example.clockwidget.constutils.SettingsConstUtils.STR_COLOR_WHITE;
+import static com.example.clockwidget.constutils.SettingsConstUtils.STR_COLOR_YELLOW;
+import static com.example.clockwidget.constutils.SettingsConstUtils.STR_DIGITAL_CLOCK;
+import static com.example.clockwidget.constutils.SettingsConstUtils.STR_TWELVE_HOUR;
+import static com.example.clockwidget.constutils.SettingsConstUtils.STR_TWENTY_FOUR_HOUR;
+import static com.example.clockwidget.constutils.SettingsConstUtils.STR_VIEW_CLOCK;
 
 /**
  * @author 吴科烽
@@ -100,13 +100,12 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
     private void initData() {
         // 填充列表
         fontColorList.clear();
-        fontColorList.add(str_color_black);
-        fontColorList.add(str_color_white);
-        fontColorList.add(str_color_red);
-        fontColorList.add(str_color_yellow);
-        fontColorList.add(str_color_green);
-        fontColorList.add(str_color_blue);
-        fontColorList.clear();
+        fontColorList.add(STR_COLOR_BLACK);
+        fontColorList.add(STR_COLOR_WHITE);
+        fontColorList.add(STR_COLOR_RED);
+        fontColorList.add(STR_COLOR_YELLOW);
+        fontColorList.add(STR_COLOR_GREEN);
+        fontColorList.add(STR_COLOR_BLUE);
         for (int i = 25; i <= 45; i++) {
             fontSizeList.add(i + "sp");
         }
@@ -129,7 +128,7 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
                 }
             }
         });
-        if (str_digital_clock.equals(SaveUtils.getClockStyle(this))) {
+        if (STR_DIGITAL_CLOCK.equals(SaveUtils.getClockStyle(this))) {
             timeFormatLinearLayout.setOnClickListener(this);
             fontColorLinearLayout.setOnClickListener(this);
             fontSizeLinearLayout.setOnClickListener(this);
@@ -217,7 +216,7 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
      * 日期格式改变
      */
     private void timeFormatChoice() {
-        final String []items = {str_twelvehour, str_twentyfourhour};
+        final String []items = {STR_TWELVE_HOUR, STR_TWENTY_FOUR_HOUR};
         AlertDialog.Builder builder = new AlertDialog.Builder(this, 0);
         builder.setTitle("时间格式选择");
         builder.setSingleChoiceItems(items, 0,
@@ -236,7 +235,7 @@ public class DateSettingsActivity extends Activity implements View.OnClickListen
      * 时钟样式改变
      */
     private void clockStyleChoice() {
-        final String []items = {str_digital_clock, str_view_clock};
+        final String []items = {STR_DIGITAL_CLOCK, STR_VIEW_CLOCK};
         AlertDialog.Builder builder = new AlertDialog.Builder(this, 0);
         builder.setTitle("时钟样式选择");
         builder.setSingleChoiceItems(items, 0,

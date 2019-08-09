@@ -24,24 +24,22 @@ import android.widget.RemoteViews;
 
 import androidx.annotation.RequiresApi;
 
-import com.example.clockwidget.constutils.SettingsConstUtils;
 import com.example.clockwidget.drawview.ViewClock;
 import com.example.clockwidget.R;
 import com.example.clockwidget.utils.DateToFestivalsUtil;
 import com.example.clockwidget.utils.SaveUtils;
 import java.util.TimeZone;
 
-import static com.example.clockwidget.constutils.SettingsConstUtils.FontColor.BLACK;
-import static com.example.clockwidget.constutils.SettingsConstUtils.str_am;
-import static com.example.clockwidget.constutils.SettingsConstUtils.str_color_black;
-import static com.example.clockwidget.constutils.SettingsConstUtils.str_color_blue;
-import static com.example.clockwidget.constutils.SettingsConstUtils.str_color_green;
-import static com.example.clockwidget.constutils.SettingsConstUtils.str_color_red;
-import static com.example.clockwidget.constutils.SettingsConstUtils.str_color_white;
-import static com.example.clockwidget.constutils.SettingsConstUtils.str_color_yellow;
-import static com.example.clockwidget.constutils.SettingsConstUtils.str_digital_clock;
-import static com.example.clockwidget.constutils.SettingsConstUtils.str_pm;
-import static com.example.clockwidget.constutils.SettingsConstUtils.str_twelvehour;
+import static com.example.clockwidget.constutils.SettingsConstUtils.STR_AM;
+import static com.example.clockwidget.constutils.SettingsConstUtils.STR_COLOR_BLACK;
+import static com.example.clockwidget.constutils.SettingsConstUtils.STR_COLOR_BLUE;
+import static com.example.clockwidget.constutils.SettingsConstUtils.STR_COLOR_GREEN;
+import static com.example.clockwidget.constutils.SettingsConstUtils.STR_COLOR_RED;
+import static com.example.clockwidget.constutils.SettingsConstUtils.STR_COLOR_WHITE;
+import static com.example.clockwidget.constutils.SettingsConstUtils.STR_COLOR_YELLOW;
+import static com.example.clockwidget.constutils.SettingsConstUtils.STR_DIGITAL_CLOCK;
+import static com.example.clockwidget.constutils.SettingsConstUtils.STR_PM;
+import static com.example.clockwidget.constutils.SettingsConstUtils.STR_TWELVE_HOUR;
 
 
 /**
@@ -50,14 +48,14 @@ import static com.example.clockwidget.constutils.SettingsConstUtils.str_twelveho
  **/
 
 public class ClockService extends Service {
-    private Handler mHandler = new Handler(Looper.getMainLooper());
+    private Handler mHandler = new Handler();
     private static final String TAG = "ClockService";
     private static final String TAG_LIFE_CYCLE = "ClockService_LifeCycle";
     private String strZoneId = "";
     private TimeZone timeZone;
     private String strTime = "";
     private String strDate = "";
-    private static final String CHANNEL_IN_STRING = "service_01";
+    private static final String CHANNEL_IN_STRING = "clockServiceChannel";
     private Bitmap mbitmap = Bitmap.createBitmap(180,180, Bitmap.Config.ARGB_8888);
     private Canvas mCanvas = new Canvas(mbitmap);
     @Override
@@ -88,7 +86,7 @@ public class ClockService extends Service {
         timeZone = TimeZone.getTimeZone(strZoneId);
         Time time = new Time(timeZone.getID());
 
-        if(str_digital_clock.equals(SaveUtils.getClockStyle(this))) {
+        if(STR_DIGITAL_CLOCK.equals(SaveUtils.getClockStyle(this))) {
             rViews.setViewVisibility(R.id.view_clock,View.GONE);
             rViews.setViewVisibility(R.id.date_time,View.VISIBLE);
             rViews.setViewVisibility(R.id.clock_time,View.VISIBLE);
@@ -114,6 +112,9 @@ public class ClockService extends Service {
     public void onDestroy() {
         Log.d(TAG_LIFE_CYCLE,"ClockService_onDestroy");
         super.onDestroy();
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            stopForeground(true);
+        }
         mHandler.removeCallbacks(mTicker);
     }
 
@@ -156,17 +157,17 @@ public class ClockService extends Service {
         int minute = time.minute;
         int sec = time.second;
         String strFormat = "";
-        if(str_twelvehour.equals(SaveUtils.getTimeFormat(this))){
+        if(STR_TWELVE_HOUR.equals(SaveUtils.getTimeFormat(this))){
             if(hour<13 && hour >0){
                 //上午
-                strFormat = str_am;
+                strFormat = STR_AM;
                 strTime = String.format("%02d:%02d:%02d",hour,minute,sec);
             }else if(hour == 0){
-                strFormat = str_pm;
+                strFormat = STR_PM;
                 strTime = String.format("12:%02d:%02d",minute,sec);
             }else{
                 //下午
-                strFormat = str_pm;
+                strFormat = STR_PM;
                 strTime = String.format("%02d:%02d:%02d",hour-12,minute,sec);
             }
         }else{
@@ -184,22 +185,22 @@ public class ClockService extends Service {
     private void setText(RemoteViews rViews){
         Log.d(TAG,"ClockService_fontcolor:"+SaveUtils.getFontColor(this));
         switch (SaveUtils.getFontColor(this)) {
-            case BLACK:
+            case STR_COLOR_BLACK:
                 rViews.setTextColor(R.id.clock_time, Color.BLACK);
                 break;
-            case str_color_white:
+            case STR_COLOR_WHITE:
                 rViews.setTextColor(R.id.clock_time, Color.WHITE);
                 break;
-            case str_color_red:
+            case STR_COLOR_RED:
                 rViews.setTextColor(R.id.clock_time, Color.RED);
                 break;
-            case str_color_yellow:
+            case STR_COLOR_YELLOW:
                 rViews.setTextColor(R.id.clock_time, Color.YELLOW);
                 break;
-            case str_color_green:
+            case STR_COLOR_GREEN:
                 rViews.setTextColor(R.id.clock_time, Color.GREEN);
                 break;
-            case str_color_blue:
+            case STR_COLOR_BLUE:
                 rViews.setTextColor(R.id.clock_time, Color.BLUE);
                 break;
             default:
@@ -242,6 +243,10 @@ public class ClockService extends Service {
         }
     };
 
+
+    /**
+     * Service启用设置
+     */
     private void setService(){
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationChannel mChannel = null;

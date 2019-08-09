@@ -24,14 +24,13 @@ public class SaveUtils {
      */
     public static String getFontColor(Context context){
         SharedPreferences mSharedPreferences=context.getSharedPreferences("data",Context.MODE_MULTI_PROCESS);
-        String fontcolor=mSharedPreferences.getString("fontcolor",STR_DEFAULT_COLOR);
-        return fontcolor;
+        return mSharedPreferences.getString("fontColor",STR_DEFAULT_COLOR);
     }
     public static void saveFontColor(Context context, String fontcolor) {
         SharedPreferences sp = context.getSharedPreferences("data", Context.MODE_MULTI_PROCESS);
         SharedPreferences.Editor edit = sp.edit();
-        edit.putString("fontcolor", fontcolor);
-        edit.commit();
+        edit.putString("fontColor", fontcolor);
+        edit.apply();
     }
 
     /**
@@ -39,16 +38,16 @@ public class SaveUtils {
      * @param context context
      * @return 字体大小
      */
-    public static void saveFontSize(Context context, String fontsize) {
-        SharedPreferences mSharedPreferences = context.getSharedPreferences("data", Context.MODE_MULTI_PROCESS);
-        SharedPreferences.Editor edit = mSharedPreferences.edit();
-        edit.putString("fontsize", fontsize);
-        edit.commit();
-    }
     public static String getFontSize(Context context){
         SharedPreferences mSharedPreferences=context.getSharedPreferences("data",Context.MODE_MULTI_PROCESS);
-        String fontsize=mSharedPreferences.getString("fontsize",STR_DEFAULT_FONT_SIZE);
-        return fontsize;
+        return mSharedPreferences.getString("fontSize",STR_DEFAULT_FONT_SIZE);
+    }
+
+    public static void saveFontSize(Context context, String fontSize) {
+        SharedPreferences mSharedPreferences = context.getSharedPreferences("data", Context.MODE_MULTI_PROCESS);
+        SharedPreferences.Editor edit = mSharedPreferences.edit();
+        edit.putString("fontSize", fontSize);
+        edit.apply();
     }
 
     /**
@@ -58,14 +57,13 @@ public class SaveUtils {
      */
     public static String getTimeFormat(Context context){
         SharedPreferences mSharedPreferences=context.getSharedPreferences("data",Context.MODE_MULTI_PROCESS);
-        String timeformat=mSharedPreferences.getString("timeformat",STR_DEFAULT_TIME_FORMAT);
-        return timeformat;
+        return mSharedPreferences.getString("timeFormat",STR_DEFAULT_TIME_FORMAT);
     }
-    public static void saveTimeFormat(Context context, String timeformat) {
+    public static void saveTimeFormat(Context context, String timeFormat) {
         SharedPreferences mSharedPreferences = context.getSharedPreferences("data", Context.MODE_MULTI_PROCESS);
         SharedPreferences.Editor edit = mSharedPreferences.edit();
-        edit.putString("timeformat", timeformat);
-        edit.commit();
+        edit.putString("timeFormat", timeFormat);
+        edit.apply();
     }
 
     /**
@@ -74,15 +72,14 @@ public class SaveUtils {
      * @return 时钟样式
      */
     public static String getClockStyle(Context context){
-        SharedPreferences mSharedPreferences=context.getSharedPreferences("data",Context.MODE_MULTI_PROCESS);
-        String clockstyle=mSharedPreferences.getString("clockstyle",STR_DEFAULT_CLOCK_STYLE);
-        return clockstyle;
+        SharedPreferences mSharedPreferences = context.getSharedPreferences("data",Context.MODE_MULTI_PROCESS);
+        return mSharedPreferences.getString("clockStyle",STR_DEFAULT_CLOCK_STYLE);
     }
-    public static void saveClockStyle(Context context, String clockstyle) {
+    public static void saveClockStyle(Context context, String clockStyle) {
         SharedPreferences mSharedPreferences = context.getSharedPreferences("data", Context.MODE_MULTI_PROCESS);
         SharedPreferences.Editor edit = mSharedPreferences.edit();
-        edit.putString("clockstyle", clockstyle);
-        edit.commit();
+        edit.putString("clockStyle", clockStyle);
+        edit.apply();
     }
 
     /**
@@ -91,15 +88,14 @@ public class SaveUtils {
      * @return 时区
      */
     public static String getTimeZone(Context context){
-        SharedPreferences mSharedPreferences=context.getSharedPreferences("data",Context.MODE_MULTI_PROCESS);
-        String timezone=mSharedPreferences.getString("timezone",STR_DEFAULT_CLOCK_TIME_ZONE);
-        return timezone;
+        SharedPreferences mSharedPreferences = context.getSharedPreferences("data",Context.MODE_MULTI_PROCESS);
+        return mSharedPreferences.getString("timeZone",STR_DEFAULT_CLOCK_TIME_ZONE);
     }
-    public static void saveTimeZone(Context context, String timezone) {
+    public static void saveTimeZone(Context context, String timeZone) {
         SharedPreferences mSharedPreferences = context.getSharedPreferences("data", Context.MODE_MULTI_PROCESS);
         SharedPreferences.Editor edit = mSharedPreferences.edit();
-        edit.putString("timezone", timezone);
-        edit.commit();
+        edit.putString("timeZone", timeZone);
+        edit.apply();
     }
     /**
      * 提取时区id
@@ -107,15 +103,14 @@ public class SaveUtils {
      * @return 时区id
      */
     public static String getZoneId(Context context){
-        SharedPreferences mSharedPreferences=context.getSharedPreferences("data",Context.MODE_MULTI_PROCESS);
-        String zoneid=mSharedPreferences.getString("zoneid",STR_DEFAULT_ZONE_ID);
-        return zoneid;
+        SharedPreferences mSharedPreferences = context.getSharedPreferences("data",Context.MODE_MULTI_PROCESS);
+        return mSharedPreferences.getString("zoneId",STR_DEFAULT_ZONE_ID);
     }
-    public static void saveZoneId(Context context, String timezone) {
+    public static void saveZoneId(Context context, String zoneId) {
         SharedPreferences mSharedPreferences = context.getSharedPreferences("data", Context.MODE_MULTI_PROCESS);
         SharedPreferences.Editor edit = mSharedPreferences.edit();
-        edit.putString("zoneid", timezone);
-        edit.commit();
+        edit.putString("zoneId", zoneId);
+        edit.apply();
     }
 
     /**
@@ -124,14 +119,13 @@ public class SaveUtils {
      * @return 节日提醒状态
      */
     public static boolean getFestivalState(Context context){
-        SharedPreferences mSharedPreferences=context.getSharedPreferences("data",Context.MODE_MULTI_PROCESS);
-        boolean festivalstate=mSharedPreferences.getBoolean("festivalstate",BOOL_DEFAULT_FESTIVAL_STATE);
-        return festivalstate;
+        SharedPreferences mSharedPreferences = context.getSharedPreferences("data",Context.MODE_MULTI_PROCESS);
+        return mSharedPreferences.getBoolean("festivalState",BOOL_DEFAULT_FESTIVAL_STATE);
     }
-    public static void saveFestivalState(Context context, boolean festivalstate) {
+    public static void saveFestivalState(Context context, boolean festivalState) {
         SharedPreferences mSharedPreferences = context.getSharedPreferences("data", Context.MODE_MULTI_PROCESS);
         SharedPreferences.Editor edit = mSharedPreferences.edit();
-        edit.putBoolean("festivalstate", festivalstate);
-        edit.commit();
+        edit.putBoolean("festivalState", festivalState);
+        edit.apply();
     }
 }
